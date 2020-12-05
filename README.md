@@ -7,8 +7,8 @@ This Quick Start is for users who wants to deploy UiPath Robot application on AW
 
 The AWS CloudFormation templates included with the Quick Start automate the following:
 
-- [Deploying the UiPath Robot on AWS Cloud](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/template?stackName=uipath&templateURL=https://aws-quickstart.s3.amazonaws.com/quickstart-uipath-robot/templates/master.template.yaml)
+- [Deploying the UiPath Robot on AWS Cloud](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/template?stackName=uipath&templateURL=https://aws-quickstart.s3.amazonaws.com/quickstart-uipath-robot/templates/main.template.yaml)
 
 You can also use the AWS CloudFormation templates as a starting point for your own implementation.
 
-![Quick Start architecture for UiPath Orchestrator on AWS](./UIPath-Robot-arch.png)
+![Quick Start architecture for UiPath Robot on AWS](./UiPath-Robot-arch.png)

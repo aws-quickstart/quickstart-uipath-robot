@@ -31,7 +31,7 @@ project:
   package_lambda: false
 tests:
   robotsimple:
-    template: ./templates/master.template.yaml
+    template: ./templates/main.template.yaml
     regions:
     - us-west-2
     parameters:
