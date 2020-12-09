@@ -29,6 +29,7 @@ project:
   - us-west-2
   shorten_stack_name: true
   package_lambda: false
+  s3_regional_buckets: true
 tests:
   robotsimple:
     template: ./templates/main.template.yaml
@@ -42,3 +43,4 @@ tests:
       OrchestratorAPIUser: ""
       OrchestratorAPIPassword: ""
       OrchestratorTenant: ""
+      KeyPairName: "$[taskcat_getkeypair]"
