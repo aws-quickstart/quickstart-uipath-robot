@@ -15,7 +15,7 @@ As shown in the architecture diagram, the Quick Start sets up the following:
 
 * In the public subnets:
 
-** Managed network address translation (NAT) gateways to allow outbound internet access for resources in the private subnets.*
+** Managed network address translation (NAT) gateways to allow outbound internet access for resources in the private subnets.
 ** A Windows bastion host to allow inbound RDP access to Amazon Elastic Compute Cloud (Amazon EC2) instances in private subnets.
 
 * In the private subnets, the EC2 machines hosting UiPath Robot
