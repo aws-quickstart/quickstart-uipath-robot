@@ -13,7 +13,6 @@ As shown in the architecture diagram, the Quick Start sets up the following:
 * A highly available architecture that spans two or more Availability Zones that you choose.
 * A virtual private cloud (VPC) configured with public and private subnets, according to AWS best practices, to provide you with your own virtual network on AWS.*
 * In the public subnets:
-
 ** Managed network address translation (NAT) gateways to allow outbound internet access for resources in the private subnets.*
 ** A Windows bastion host to allow inbound RDP access to Amazon Elastic Compute Cloud (Amazon EC2) instances in private subnets.
 
