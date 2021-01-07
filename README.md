@@ -12,3 +12,17 @@ The AWS CloudFormation templates included with the Quick Start automate the foll
 You can also use the AWS CloudFormation templates as a starting point for your own implementation.
 
 ![Quick Start architecture for UiPath Robot on AWS](./UiPath-Robot-arch.png)
+
+As shown in the architecture for UiPath Robot, the Quick Start sets up the following:
+
+* A highly available architecture that spans two (or more) Availability Zones, per your choosing.
+* A VPC configured with public and private subnets, according to AWS best practices, to provide you with your own virtual network on AWS.*
+
+In the public subnets:
+* Managed network address translation (NAT) gateways to allow outbound internet access for resources in the private subnets.*
+* A Windows bastion host to allow inbound RDP access to EC2 instances in private subnets.
+
+In the private subnets:
+* The EC2 machines hosting UiPath Robot
+
+_You are responsible for the cost of the AWS services used while running this Quick Start. There is no additional cost for using the Quick Start._
