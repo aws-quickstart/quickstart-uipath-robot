@@ -1,8 +1,6 @@
 ## UiPath Robot on the AWS Cloud—Quick Start
 
-This Quick Start reference deployment guide provides step-by-step instructions for deploying UiPath Robot on AWS Cloud.
-
-This Quick Start is for users who wants to deploy UiPath Robot application on the AWS Cloud. It deploys UiPath Robot, which helps with robotic automation processes, allowing users to automate attended and unattended process tasks within their enterprise environment. 
+This Quick Start is for users who wants to deploy UiPath Robot on the AWS Cloud. UiPath Robot helps with robotic automation processes, allowing users to automate attended and unattended process tasks within their enterprise environment. 
 
 The [AWS CloudFormation template](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/template?stackName=uipath&templateURL=https://aws-quickstart.s3.amazonaws.com/quickstart-uipath-robot/templates/main.template.yaml) included with the Quick Start automates deploying UiPath Robot on AWS. You can also use the AWS CloudFormation template as a starting point for your own implementation.
 
