@@ -44,3 +44,21 @@ tests:
       OrchestratorAPIPassword: ""
       OrchestratorTenant: ""
       KeyPairName: "$[taskcat_getkeypair]"
+
+  existing-vpc:
+    template: ./templates/uipath-robot.template.yaml
+    regions:
+    - us-east-2
+    parameters:
+      AvailabilityZones: "$[taskcat_getaz_2]"
+      AdminPassword: "$[taskcat_genpass_8]"
+      RobotRole: localadmin
+      OrchestratorURL: ""
+      OrchestratorAPIUser: ""
+      OrchestratorAPIPassword: ""
+      OrchestratorTenant: ""
+      KeyPairName: "$[taskcat_getkeypair]"
+      VPCCIDR: 10.0.0.0/16
+      VPCID: <<vpc-id>>
+      PublicSubnetID: <<subnet-id>>
+      PrivateSubnetID: <<subnet-id>>
