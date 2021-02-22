@@ -11,7 +11,7 @@ image::../images/test1.png[test1,width=100%,height=100%]
 
 [NOTE]
 ====
-The deployment creates a *MODERN* folder called *AWSDeployed*, which contains the UiPath Robot. 
+The deployment creates a *MODERN* folder called *AWSDeployed*, which contains the UiPath Robot.
 
 Depending on the type of Robot you selected, you will encounter the following situations:
 
