@@ -10,12 +10,12 @@ Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
-          default: Availability Zone Configuration
+          default: Availability Zone configuration
         Parameters:
           - AvailabilityZones
           - NumberOfAZs
       - Label:
-          default: Network Configuration
+          default: Network configuration
         Parameters:
           - VPCCIDR
           - PublicSubnetTag1
@@ -25,12 +25,12 @@ Metadata:
           - PrivateSubnetTag2
           - PrivateSubnetTag3
       - Label:
-          default: Robot VM Configuration
+          default: Robot VM configuration
         Parameters:
           - KeyPairName
           - InstanceType
       - Label:
-          default: UiPath Robot Configuration
+          default: UiPath Robot configuration
         Parameters:
           - RobotVersion
           - RobotType
@@ -40,7 +40,7 @@ Metadata:
           - OrchestratorAPIUser
           - OrchestratorAPIPassword
       - Label:
-          default: Quickstart Bucket configuration
+          default: Quick Start S3 bucket configuration
         Parameters:
           - QSS3BucketName
           - QSS3KeyPrefix
@@ -48,7 +48,7 @@ Metadata:
       AvailabilityZones:
         default: Availability Zone(s) selection
       NumberOfAZs:
-        default: Number of AZs to use
+        default: Number of Availability Zones to use
       VPCCIDR:
         default: VPC CIDR
       PrivateSubnetTag1:
@@ -64,33 +64,32 @@ Metadata:
       PublicSubnetTag3:
         default: Public subnet 3 tag
       KeyPairName:
-        default: Instance Key pair
+        default: Instance key pair
       InstanceType:
         default: Instance type
       RobotType:
-        default: UiPath Robot type (attended/unattended).
+        default: UiPath robot type (attended/unattended)
       RobotVersion:
         default: UiPath Robot version.
       OrchestratorURL:
-        default: URL of an existing and licensed Orchestrator.
+        default: UiPath Orchestrator URL
       OrchestratorTenant:
-        default: Tenant name where the Robot will be created.
+        default: Robot tenant name
       OrchestratorAPIUser:
-        default: Orchestrator API username with role to create/add Robot.
+        default: UiPathn Orchestrator API username
       OrchestratorAPIPassword:
-        default: Orchestrator API password
+        default: UiPath Orchestrator API password
       AdminPassword:
-        default: Admin Password
+        default: Administrator password
       QSS3BucketName:
-        default: Template hosting Bucket
+        default: Template-hosting S3 bucket
       QSS3KeyPrefix:
         default: Template folder
 Parameters:
   AvailabilityZones:
     Description: >-
-      List of Availability Zones to use for the subnets in the VPC - maximum of
-      3 AZs are used for this deployment (logical order of your selections is
-      preserved).
+      List of Availability Zones to use for the subnets in the VPC. A maximum of
+      3 AZs are used for this deployment.
     Type: 'List<AWS::EC2::AvailabilityZone::Name>'
   NumberOfAZs:
     AllowedValues:
