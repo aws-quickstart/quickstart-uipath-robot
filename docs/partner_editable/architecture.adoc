@@ -14,6 +14,7 @@ As shown in <<architecture1>>, the Quick Start sets up the following:
 * A virtual private cloud (VPC) configured with public and private subnets, according to AWS
 best practices, to provide you with your own virtual network on AWS.*
 * In the public subnets:
+** Elastic IP addresses associated with the NAT gateway.
 ** Managed network address translation (NAT) gateways to allow outbound
 internet access for resources in the private subnets.*
 ** A Windows bastion host to allow inbound RDP access to Amazon EC2 instances in private subnets.
@@ -23,4 +24,4 @@ internet access for resources in the private subnets.*
 // Add bullet points for any additional components that are included in the deployment. Make sure that the additional components are also represented in the architecture diagram. End each bullet with a period.
 // * <describe any additional components>.
 
-// [.small]#*The template that deploys the Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.#
+[.small]#*The template that deploys the Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.#
