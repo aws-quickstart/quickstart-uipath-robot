@@ -1,0 +1,36 @@
+
+.Network Configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|VPC CIDR
+(`VPCCIDR`)|`10.0.0.0/16`|CIDR block for the VPC, must be in the form x.x.0.0/16.|VPC ID
+(`VPCID`)|`**__Requires input__**`|VPC ID to create the Robot in.|Private subnet to create the robot
+(`PrivateSubnetID`)|`**__Requires input__**`|Private subnet to create the UiPath Robot|Public subnet to create the robot
+(`PublicSubnetID`)|`**__Requires input__**`|Public subnet to create the bation to access the UiPath Robot
+|===
+.Robot VM Configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|Instance Key pair
+(`KeyPairName`)|`**__Requires input__**`|Existing Key Pair, which is to be used to Log in to VM instances.|Instance type
+(`InstanceType`)|`t2.medium`|EC2 instance type
+|===
+.UiPath Robot Configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|UiPath Robot version.
+(`RobotVersion`)|`20.10.2`|UIPath Robot Version to be installed.|UiPath Robot type (attended/unattended).
+(`RobotType`)|`Attended`|Choose what type of UiPath Robot you want to be installed. Options are: Attended or Unattended.|Admin Password
+(`AdminPassword`)|`**__Requires input__**`|Robot's Windows Administrator password to login as.|URL of an existing and licensed Orchestrator.
+(`OrchestratorURL`)|`**__Requires input__**`|URL of an existing and licensed Orchestrator.|Tenant name where the Robot will be created.
+(`OrchestratorTenant`)|`default`|Tenant name where the Robot will be created.|Orchestrator API username with role to create/add Robot.
+(`OrchestratorAPIUser`)|`**__Requires input__**`|Orchestrator API username with role to create/add Robot.|Orchestrator API password
+(`OrchestratorAPIPassword`)|`**__Requires input__**`|Orchestrator API password.
+|===
+.Quickstart Bucket configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|Template hosting Bucket
+(`QSS3BucketName`)|`aws-quickstart`|S3 bucket name hosting the Quickstart templates.|Template folder
+(`QSS3KeyPrefix`)|`quickstart-uipath-robot/`|S3 key prefix under which Quick Start templates are hosted.
+|===
