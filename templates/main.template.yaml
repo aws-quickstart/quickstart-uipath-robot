@@ -5,7 +5,7 @@ Description: >-
   public subnets. (qs-1r2g41216)
 Metadata:
   QuickStartDocumentation:
-    EntrypointName: "Launch into a new VPC"
+    EntrypointName: Launch into a new VPC
     Order: 1
   AWS::CloudFormation::Interface:
     ParameterGroups:
@@ -68,9 +68,9 @@ Metadata:
       InstanceType:
         default: Instance type
       RobotType:
-        default: UiPath robot type (attended/unattended)
+        default: UiPath Robot type (attended/unattended)
       RobotVersion:
-        default: UiPath Robot version.
+        default: UiPath Robot version
       OrchestratorURL:
         default: UiPath Orchestrator URL
       OrchestratorTenant:
@@ -107,53 +107,53 @@ Parameters:
   PrivateSubnetTag1:
     AllowedPattern: '^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"''\[\]\{\}]*)?$'
     ConstraintDescription: >-
-      Tags must be in format "Key=Value" keys can only contain
-      [a-zA-Z0-9+\-._:/@], values can contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
+      Tags must be in format "Key=Value". Key can only contain
+      [a-zA-Z0-9+\-._:/@]. Value can only contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
     Default: Network=Private1
-    Description: Tag to add to private subnet 1, in format Key=Value (Optional).
+    Description: (Optional) Tag to add to private subnet 1, in format Key=Value.
     Type: String
   PrivateSubnetTag2:
     AllowedPattern: '^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"''\[\]\{\}]*)?$'
     ConstraintDescription: >-
-      tags must be in format "Key=Value" keys can only contain
-      [a-zA-Z0-9+\-._:/@], values can contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
+      Tags must be in format "Key=Value". Key can only contain
+      [a-zA-Z0-9+\-._:/@]. Value can only contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
     Default: Network=Private2
-    Description: Tag to add to private subnet 2 in format Key=Value (Optional).
+    Description: (Optional) Tag to add to private subnet 2, in format Key=Value.
     Type: String
   PrivateSubnetTag3:
     AllowedPattern: '^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"''\[\]\{\}]*)?$'
     ConstraintDescription: >-
-      tags must be in format "Key=Value" keys can only contain
-      [a-zA-Z0-9+\-._:/@], values can contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
+      Tags must be in format "Key=Value". Key can only contain
+      [a-zA-Z0-9+\-._:/@]. Value can only contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
     Default: Network=Private3
-    Description: Tag to add to private subnet 3 in format Key=Value (Optional).
+    Description: (Optional) Tag to add to private subnet 3, in format Key=Value.
     Type: String
   PublicSubnetTag1:
     AllowedPattern: '^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"''\[\]\{\}]*)?$'
     ConstraintDescription: >-
-      tags must be in format "Key=Value" keys can only contain
-      [a-zA-Z0-9+\-._:/@], values can contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
+      Tags must be in format "Key=Value". Key can only contain
+      [a-zA-Z0-9+\-._:/@]. Value can only contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
     Default: Network=Public1
-    Description: Tag to add to public subnet 1 in format Key=Value (Optional)
+    Description: (Optional) Tag to add to public subnet 1, in format Key=Value.
     Type: String
   PublicSubnetTag2:
     AllowedPattern: '^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"''\[\]\{\}]*)?$'
     ConstraintDescription: >-
-      tags must be in format "Key=Value" keys can only contain
-      [a-zA-Z0-9+\-._:/@], values can contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
+      Tags must be in format "Key=Value". Key can only contain
+      [a-zA-Z0-9+\-._:/@]. Value can only contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
     Default: Network=Public2
-    Description: Tag to add to public subnet 2 in format Key=Value (Optional).
+    Description: (Optional) Tag to add to public subnet 2, in format Key=Value.
     Type: String
   PublicSubnetTag3:
     AllowedPattern: '^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"''\[\]\{\}]*)?$'
     ConstraintDescription: >-
-      tags must be in format "Key=Value" keys can only contain
-      [a-zA-Z0-9+\-._:/@], values can contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
+      Tags must be in format "Key=Value". Key can only contain
+      [a-zA-Z0-9+\-._:/@]. Value can only contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
     Default: Network=Public3
-    Description: Tag to add to public subnet 3 in format Key=Value (Optional).
+    Description: (Optional) Tag to add to public subnet 3, in format Key=Value.
     Type: String
   KeyPairName:
-    Description: 'Existing Key Pair, which is to be used to Log in to VM instances.'
+    Description: Key pair used to log in to virtual machine (VM) instances.
     Type: 'AWS::EC2::KeyPair::KeyName'
   InstanceType:
     AllowedValues:
@@ -176,9 +176,9 @@ Parameters:
       - r4.2xlarge
       - r4.4xlarge
       - r4.8xlarge
-    ConstraintDescription: Amazon EC2 instance class. Must be a valid Amazon EC2 instance type from the list.
+    ConstraintDescription: Must be a valid Amazon EC2 instance type from the list.
     Default: t2.medium
-    Description: EC2 instance type
+    Description: EC2 instance type.
     Type: String
   AdminPassword:
     Description: Windows administrator password for UiPath Robot.
@@ -197,28 +197,27 @@ Parameters:
     AllowedValues:
       - Attended
       - Unattended
-    Description: >-
-      Choose the type of UiPath robot you want to install (attended or unattended).
+    Description: Choose the type of UiPath Robot you want to install (attended or unattended). Attended robots run under human supervision. Unattended robots run without human supervision.
   RobotVersion:
     Description: UIPath Robot version to be installed.
     Type: String
     Default: 20.10.2
     AllowedValues:
       - 20.10.2
-    ConstraintDescription: Robot version number can contain only digits and dot(.), and must .'
+    ConstraintDescription: Robot version number can contain only digits and periods (.).
   OrchestratorURL:
     Type: String
-    Description: Orchestrator URL.
+    Description: UiPath Orchestrator URL.
   OrchestratorTenant:
     Type: String
     Default: default
-    Description: Tenant name where the robot will be created.
+    Description: Tenant name where the UiPath Robot will be created.
   OrchestratorAPIUser:
     Type: String
-    Description: Orchestrator API username. It must have a role with permissions to add and create robots.
+    Description: UiPath Orchestrator API username. This must have a role with permissions to add and create robots.
   OrchestratorAPIPassword:
     Type: String
-    Description: Orchestrator API password.
+    Description: UiPath Orchestrator API password.
     NoEcho: 'true'
   QSS3BucketName:
     AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
@@ -234,7 +233,7 @@ Parameters:
     Type: String
     Default: aws-quickstart
   QSS3BucketRegion:
-    Default: eu-central-1
+    Default: us-east-1
     Description: >-
        AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. Keep the default Region unless you are customizing the template. Changing this Region updates code references to point to a new Quick Start location. When using your own bucket, specify the Region. See https://aws-quickstart.github.io/option1.html.
     Type: String
@@ -441,7 +440,6 @@ Outputs:
     Value: !GetAtt 
       - ServerStack
       - Outputs.UiPathRobotPrivateIP
-Outputs:
   Postdeployment:
     Description: See the deployment guide for post-deployment steps.
     Value: https://aws.amazon.com/quickstart/?quickstart-all.sort-by=item.additionalFields.sortDate&quickstart-all.sort-order=desc&awsm.page-quickstart-all=5
