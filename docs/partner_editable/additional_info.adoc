@@ -71,9 +71,9 @@ For more information, see https://docs.uipath.com/orchestrator/docs/security-bes
 == Other useful information
 //Provide any other information of interest to users, especially focusing on areas where AWS or cloud usage differs from on-premises usage.
 
-AWS provides a set of building blocks (for example, Amazon EC2 and Amazon VPC) that you can use to provision your application's infrastructure. In this model, some security capabilities, such as physical security, are the responsibility of AWS and are highlighted in the 
+AWS provides a set of building blocks, such as Amazon EC2 and Amazon VPC, that you can use to provision your application's infrastructure. In this model, some security capabilities, such as physical security, are the responsibility of AWS and are highlighted in the 
 //TODO Insert a link to the whitepaper.
-AWS security whitepaper. Other areas, such as controlling access to an application, are either the responsibilty of the application developer or are dependent on the tools provided by Microsoft or Linux.
+AWS security whitepaper. Other areas, such as controlling access to an application, are either the responsibility of the application developer or are dependent on the tools provided by Microsoft or Linux.
 
 This Quick Start configures the following security groups for the UiPath stack:
 
