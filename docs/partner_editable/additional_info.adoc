@@ -41,42 +41,32 @@ image::../images/test2.png[test2,width=100%,height=100%]
 // Provide post-deployment best practices for using the technology on AWS, including considerations such as migrating data, backups, ensuring high performance, high availability, etc. Link to software documentation for detailed information.
 
 === High availability and disaster recovery
-This Quick Start's architecture supports AWS best practices for high availability and security, and Amazon EC2 provides the ability to run instances in multiple Regions and Availability Zones. Regions are dispersed across geographic areas, and Availability Zones are distinct locations within a Region that are not only isolated from failures in other Availability Zones but also provide inexpensive, low-latency network connectivity to other Availability Zones in the same Region.
+Amazon EC2 provides the ability to place instances in multiple locations composed of AWS Regions and Availability Zones. Regions are dispersed and located in separate geographic areas. Availability Zones are distinct locations within a Region that are engineered to be isolated from failures in other Availability Zones. They provide inexpensive, low-latency network connectivity to other Availability Zones in the same Region.
 
-By launching instances in separate Regions, you can design your application to be pysically closer to customers or to meet legal and other requirements. By launching your instances in separate Availability Zones, your application is protected from localized failures. Exchange
-//TODO Microsft Exchange?
-provides infrastructure features that complement the high-availability and disaster-recovery scenarios supported by the AWS Cloud.
+By launching your instances in separate Regions, you can design your application to be physically closer to specific customers or to meet legal or other requirements. By launching your instances in separate Availability Zones, you can protect your applications from the failure of a single location. Microsoft Exchange provides infrastructure features that complement the high availability and disaster recovery scenarios supported in the AWS Cloud.
 
-This Quick Start also provides an option to deploy Robot in at least two Availability Zones, which can mitigate a loss of quorum if a failure occurs on a single node. This option, however, is available only in AWS Regions that include two or more Availability Zones. For more information, see https://aws.amazon.com/about-aws/global-infrastructure/[Global Infrastructure^].
+The Quick Start also provides the option to deploy into a minimum of two Availability Zones. This option mitigates the loss of quorum in the case of a failure of a single node. However, you can choose this option only in AWS Regions that include two or more Availability Zones. For a current list of Availability Zones, see https://aws.amazon.com/about-aws/global-infrastructure/[AWS Global Infrastructure].
 
-We recommend that you use the https://docs.uipath.com/[UiPath Documentation Portal^] to customize some of the steps described in this guide or add deployment steps that best meet your business, IT, and security requirements.
-
+To customize UiPath software for your business, IT, and security requirements, consult the https://docs.uipath.com/[UiPath Documentation Portal].
 
 == Security
 // Provide post-deployment best practices for using the technology on AWS, including considerations such as migrating data, backups, ensuring high performance, high availability, etc. Link to software documentation for detailed information.
 
-When Amazon EC2 instances launch, they must be associated with a security group, which acts as a stateful firewall. You control the network traffic that enters and leaves the security group, so you can build granular rules that are scoped by protocol, port number, and source or destination IP address or subnet. By default, the security group permits all outbound traffic. Inboud traffic, however, must be configured in order to reach your instances.
+When Amazon EC2 instances are launched, they must be associated with a security group, which acts as a stateful firewall. You have complete control over the network traffic entering or leaving the security group. You can build granular rules that are scoped by protocol, port number, and source, destination IP address, or subnet. By default, all outbound traffic from security group is permitted. Inbound traffic, however, must be configured to allow the appropriate traffic to reach your instances.
 
-We recommend that you tightly control inbound traffic. This reduces the attack surface of Amazon EC2 instances but allows the following ports to communicate:
+We recommend that you tightly control inbound traffic. Doing this reduces the attack surface of your EC2 instances yet leaves the following ports open for application communication.
 
-Robot
+*UiPath Robot TCP ports*
 
 :xrefstyle: short
 [#security1]
-.Test the deployment
+.TCP ports
 image::../images/security1.png[security1,width=50%,height=50%]
 
-[cols="20,80",grid="rows",frame="topbot" caption=]
-.Robot Ports
-|===
-|3389
-|RDP access
+* 3389 for RDP access
+* 443 for communication with UiPath Orchestrator
 
-|443
-|communication with Orchestrator
-|===
-
-For more information, see UiPath's https://docs.uipath.com/orchestrator/docs/security-best-practices[Security Best Practices^]. 
+For more information, see https://docs.uipath.com/orchestrator/docs/security-best-practices[Security Best Practices^]. 
 
 == Other useful information
 //Provide any other information of interest to users, especially focusing on areas where AWS or cloud usage differs from on-premises usage.
@@ -112,52 +102,54 @@ Amazon EC2 uses public-key cryptography to encrypt and decrypt login information
 .Create a key pair
 image::../images/ds1.png[ds1,width=100%,height=100%]
 
-== Create an IAM user
+== Create IAM user
 
-To launch the stack, your login must have programmatic access to the following AWS services:
+To launch the Cloudformation stack for this Quick Start, you’ll need a user login with programmatic access to following AWS services:
 
-[lowerroman]
-. AWS CloudFormation
-. AWS IAM, Amazon EC2
-. Amazon S3
-. AWS Lambda
-. AWS Storage Gateway.
+* AWS CloudFormation
+* AWS IAM, Amazon EC2
+* Amazon S3
+* AWS Lambda
+* AWS Storage Gateway.
 
-If you already have an IAM user with full access to AWS services, skip this step.
+NOTE: If you do already have an IAM user with full access to these services, or have administrator access, you can skip this section.
 
-. If you do not have an adequate IAM user, create one in the AWS console. In the following example, we create `cfnuser` to provide programmatic access and console access.
+[start=1]
+:xrefstyle: short
+. If you do not already have such an IAM user, https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console[create one] from AWS console. In <<cfnuser>>, a user is created with programmatic and console access.
+
+[#cfnuser]
+.Adding an IAM user
+image::../images/cfnuser.png[IAM,width=100%,height=100%]
+
+[start=2]
+. To follow AWS best practices, allow access to required services. When setting permissions for the user, choose *Attach existing policies directly*. Then choose roles with full access for each of the services listed previously.
+
+:xrefstyle: short
+[#iam_2]
+.Setting permissions
+image::../images/iam_2.png[IAM,width=100%,height=100%]
+
+TIP: As shown in <<iam_2>>, you can filter the role list by entering a few letters of the role you are looking for in the search box.
+
+[start=3]
+. Choose *Next: Tags* and optionally add a Name tag to identify the user.  
 +
 :xrefstyle: short
-[#ds2]
-.Create an IAM user
-image::../images/ds2.png[ds2,width=100%,height=100%]
-+
-. To follow AWS best practices, allow access to the required services by attaching existing policies. Enter the first few letters of each service name, and choose the *FullAccess* role from the filtered list. The following example shows the screen for adding *AmazonEC2FullAccess*.  
-+
-:xrefstyle: short
-[#ds3]
-.Create an IAM user
-image::../images/ds3.png[ds3,width=100%,height=100%]
-+
-Repeat this step for all of the necessary services, and choose *Next*.
-+
-. (Optional) Choose *Tags*, and add a tag to identify the user.
-+  
-:xrefstyle: short
-[#ds4]
-.Create an IAM user
-image::../images/ds4.png[ds4,width=100%,height=100%]
-+
-. Choose *Next*. Review the list to ensure that full access to all AWS services are granted to the user.  
+[#iam_3]
+.Adding optional tags
+image::../images/iam_3.png[IAM,width=100%,height=100%]
+
+. Choose *Next: Review* and make sure that full access to all ten services listed earlier are granted to the user.  
 +
 :xrefstyle: short
-[#ds5]
-.Create an IAM user
-image::../images/ds5.png[ds5,width=100%,height=100%]
-+
-. Choose *Create User*, and download the credentials as a `.csv` file. Store it in a secure location for future reference if necessary.
-+
+[#iam_4]
+.Reviewing user details
+image::../images/iam_4.png[IAM,width=100%,height=100%]
+
+. Choose *Create User*. Choose *Download .csv* to download and store the user's security credentials in CSV format for future reference.
+
 :xrefstyle: short
-[#ds6]
-.Create an IAM user
-image::../images/ds6.png[ds6,width=100%,height=100%]
+[#iam_5]
+.IAM user created
+image::../images/iam_5.png[IAM,width=100%,height=100%]
