@@ -2,6 +2,4 @@
 // Identify your target audience and explain how/why they would use this Quick Start.
 //Avoid borrowing text from third-party websites (copying text from AWS service documentation is fine). Also, avoid marketing-speak, focusing instead on the technical aspect.
 
-This Quick Start is for users who want to deploy UiPath Robot in the AWS Cloud, which lets users run processes developed in UiPath Studio. In order to execute processes, Robots must be connected to Orchestrator or be licensed locally 
-//TODO Replace the following parentheticial with a sentence that contains a link to the licensing info.
-(read more about licensing). The license determines the type of Robot, and the deployment determines the type of service.
+This Quick Start is for users who want to deploy UiPath Robot in the AWS Cloud. 
