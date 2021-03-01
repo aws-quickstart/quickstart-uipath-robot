@@ -93,18 +93,18 @@ Outbound: any ports
 
 == Create a key pair
 
-. To log in to your instances, you must create a https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[key pair^] in your preferred Region. In the navigation pane of the Amazon EC2 console, choose *Key Pairs* and then *Create Key Pair*. Enter a name, and then choose *Create.*
-
-Amazon EC2 uses public-key cryptography to encrypt and decrypt login information. In Windows instances, the key pair obtains the administrator password via the Amazon EC2 console and then logs in using Remote Desktop Protocol (RDP). On Linux, the key pair authenticates the SSH (Secure Shell) login. For more information, see https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#prepare-key-pair[Create or import a key pair^].
+To log in to your instances, you must create a key pair in your preferred Region. In the navigation pane of the Amazon EC2 console, choose *Key Pairs* and then *Create Key Pair*. Then, enter a name and choose *Create.*
 
 :xrefstyle: short
 [#ds1]
 .Create a key pair
 image::../images/ds1.png[ds1,width=100%,height=100%]
 
+Amazon EC2 uses public-key cryptography to encrypt and decrypt login information. In Windows instances, the key pair obtains the administrator password via the Amazon EC2 console and then logs in using Remote Desktop Protocol (RDP). On Linux, the key pair authenticates the SSH (Secure Shell) login. For more information, see https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#prepare-key-pair[Create or import a key pair^].
+
 == Create IAM user
 
-To launch the Cloudformation stack for this Quick Start, you’ll need a user login with programmatic access to following AWS services:
+To launch the Cloudformation stack for this Quick Start, you’ll need an IAM user with programmatic access to following AWS services:
 
 * AWS CloudFormation
 * AWS IAM, Amazon EC2
@@ -130,7 +130,7 @@ image::../images/cfnuser.png[IAM,width=100%,height=100%]
 .Setting permissions
 image::../images/iam_2.png[IAM,width=100%,height=100%]
 
-TIP: As shown in <<iam_2>>, you can filter the role list by entering a few letters of the role you are looking for in the search box.
+TIP: As shown in <<iam_2>>, you can filter the role list using the search box.
 
 [start=3]
 . Choose *Next: Tags* and optionally add a Name tag to identify the user.  
@@ -140,7 +140,7 @@ TIP: As shown in <<iam_2>>, you can filter the role list by entering a few lette
 .Adding optional tags
 image::../images/iam_3.png[IAM,width=100%,height=100%]
 
-. Choose *Next: Review* and make sure that full access to all ten services listed earlier are granted to the user.  
+. Choose *Next: Review* and verify that the user is configured with full access to the services listed previously.  
 +
 :xrefstyle: short
 [#iam_4]
