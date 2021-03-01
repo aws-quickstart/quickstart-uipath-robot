@@ -323,7 +323,7 @@ Resources:
   FindAMIFunction:
     Type: 'AWS::Lambda::Function'
     Properties:
-      Description: Finds a matching AMI Id
+      Description: Finds a matching AMI ID
       Handler: index.handler
       Role: !GetAtt 
         - LambdaRoleStack
@@ -431,12 +431,12 @@ Resources:
         OrchestratorAPIPassword: !Ref OrchestratorAPIPassword
 Outputs:
   BastionHostPublicIP:
-    Description: Public IP address of bastion host in public subnet 1.
+    Description: Public IP address of bastion host, in public subnet 1.
     Value: !GetAtt 
       - ServerStack
       - Outputs.BastionHostPublicIP
   UiPathRobotPrivateIP:
-    Description: Private IP address of UiPath Robot in private subnet 1.
+    Description: Private IP address of UiPath Robot, in private subnet 1.
     Value: !GetAtt 
       - ServerStack
       - Outputs.UiPathRobotPrivateIP

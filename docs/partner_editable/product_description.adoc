@@ -2,8 +2,7 @@
 // Briefly describe the software. Use consistent and clear branding. 
 // Include the benefits of using the software on AWS, and provide details on usage scenarios.
 
-UiPath Robot is an agent that runs processes you develop in UiPath Studio. 
-
+UiPath Robot is the implementation agent used to run processes developed in UiPath Studio. In order to run processes, UiPath Robots must be either connected to UiPath Orchestrator or be licensed locally. UiPath Orchestrator is theFor more information, see the https://docs.uipath.com/robot/docs/introduction[UiPath Robot Guide].
 With this Quick Start, you can take advantage of the elasticity of the AWS Cloud to set up, operate, and scale robotic process automation (RPA). The architecture AWS offers provides cost-efficient and resizable capacity to scale your robots to meet your business needs. Each UIPath Robot deploys on one Amazon EC2 instance
 
 

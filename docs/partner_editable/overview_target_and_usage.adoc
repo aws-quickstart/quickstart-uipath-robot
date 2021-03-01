@@ -2,4 +2,4 @@
 // Identify your target audience and explain how/why they would use this Quick Start.
 //Avoid borrowing text from third-party websites (copying text from AWS service documentation is fine). Also, avoid marketing-speak, focusing instead on the technical aspect.
 
-This Quick Start is for users who want to deploy UiPath Robot in the AWS Cloud. UiPath Robot is the implementation agent used to run processes developed in UiPath Studio. In order to run processes, UiPath Robots must be either connected to UiPath Orchestrator or be licensed locally. For more information, see the https://docs.uipath.com/robot/docs/introduction[UiPath Robot Guide].
+This Quick Start is for users who want to deploy UiPath Robot in the AWS Cloud. 
