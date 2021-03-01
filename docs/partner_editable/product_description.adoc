@@ -2,20 +2,15 @@
 // Briefly describe the software. Use consistent and clear branding. 
 // Include the benefits of using the software on AWS, and provide details on usage scenarios.
 
-UiPath Robot is an execution agent that enables you to run processes developed in UiPath Studio.
-The Robot is split into several components, and each component is dedicated to a particular automation task. The Robot components are as follows:
+UiPath Robot is an agent that runs processes you develop in UiPath Studio. 
 
-*	https://docs.uipath.com/robot/docs/robot-service[Robot Service^]
-**	Service Mode
-**	User Mode
-*	https://docs.uipath.com/robot/docs/robot-executor[Robot Executor^]
-*	https://docs.uipath.com/robot/docs/robot-agent[Robot Tray^]
-*	https://docs.uipath.com/robot/docs/robot-command-line-interface[Robot Command Line Interface^]
-*	https://docs.uipath.com/robot/docs/uipath-assistant[About UiPath Assistant^]
+With this Quick Start, you can take advantage of the elasticity of the AWS Cloud to set up, operate, and scale robotic process automation (RPA). The architecture AWS offers provides cost-efficient and resizable capacity to scale your robots to meet your business needs. Each UIPath Robot deploys on one Amazon EC2 instance
 
-Splitting up the components helps developers, support users, and computers run, identify, and track the activity of each process. Custom behaviors, such as setting up different Firewall rules for the Robot Executor and Robot Service, can be configured for each component.
 
-This Quick Start reference deployment allows you to deploy the following types of Robots:
+in an architecture based on AWS best practices for security and high availability. AWS provides cost-efficient and resizable capacity, and scales resources to meet your specific workload. This Quick Start also offers . For more information, see link:#_architecture[Architecture], later in this guide.
+
+
+With this Quick Start, you can deploy the following types of UiPath Robots:
 
 *	Attended Robot: This type is triggered by user events and operates alongside a user by sharing the same workstation. Attended Robots are used with Orchestrator for centralized process deployment and logging. They can also add data to a processing queue for Unattended Robots.
 *	Unattended Robot: This type runs in a virtual environment and can automate any number of processes. In addition to the capabilities of an Attended Robot, 
