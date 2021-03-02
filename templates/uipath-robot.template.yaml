@@ -332,12 +332,12 @@ Resources:
         OrchestratorAPIPassword: !Ref OrchestratorAPIPassword
 Outputs:
   BastionHostPublicIP:
-    Description: Public IP of Bastion host in Public Subnet 1
+    Description: Public IP of bastion host in public subnet 1.
     Value: !GetAtt
       - ServerStack
       - Outputs.BastionHostPublicIP
   UiPathRobotPrivateIP:
-    Description: Private IP of UiPath Robot in Private Subnet 1
+    Description: Private IP of UiPath Robot in private subnet 1.
     Value: !GetAtt
       - ServerStack
       - Outputs.UiPathRobotPrivateIP
