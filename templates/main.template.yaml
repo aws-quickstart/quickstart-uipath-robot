@@ -74,9 +74,9 @@ Metadata:
       OrchestratorURL:
         default: UiPath Orchestrator URL
       OrchestratorTenant:
-        default: Robot tenant name
+        default: UiPath Robot tenant name
       OrchestratorAPIUser:
-        default: UiPathn Orchestrator API username
+        default: UiPath Orchestrator API username
       OrchestratorAPIPassword:
         default: UiPath Orchestrator API password
       AdminPassword:
@@ -189,17 +189,16 @@ Parameters:
     AllowedPattern: >-
       (?=^.{6,124}$)((?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*
     ConstraintDescription: >-
-      Windows administrator password must contain at least one uppercase letter
-      and be longer than six characters.
+      Windows administrator password must contain more than six characters, including at least one uppercase letter.
   RobotType:
     Type: String
     Default: Attended
     AllowedValues:
       - Attended
       - Unattended
-    Description: Choose the type of UiPath Robot you want to install (attended or unattended). Attended robots run under human supervision. Unattended robots run without human supervision.
+    Description: Choose the type of UiPath Robot you want to install (attended or unattended).
   RobotVersion:
-    Description: UIPath Robot version to be installed.
+    Description: UIPath Robot version to install.
     Type: String
     Default: 20.10.2
     AllowedValues:
@@ -211,7 +210,7 @@ Parameters:
   OrchestratorTenant:
     Type: String
     Default: default
-    Description: Tenant name where the UiPath Robot will be created.
+    Description: Tenant name where the UiPath Robot is created.
   OrchestratorAPIUser:
     Type: String
     Description: UiPath Orchestrator API username. This must have a role with permissions to add and create robots.
@@ -238,14 +237,15 @@ Parameters:
        AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. Keep the default Region unless you are customizing the template. Changing this Region updates code references to point to a new Quick Start location. When using your own bucket, specify the Region. See https://aws-quickstart.github.io/option1.html.
     Type: String
     AllowedPattern: (us(-gov)?|ap|ca|cn|eu|sa)-(central|(north|south)?(east|west)?)-\d
-    ConstraintDescription: Quick Start bucket Region must be a valid AWS Region code.
+    ConstraintDescription: Must be a valid AWS Region code.
   QSS3KeyPrefix:
     AllowedPattern: '^[0-9a-zA-Z-/]*/$'
     ConstraintDescription: >-
       The Quick Start S3 key prefix can include numbers, lowercase letters,
       uppercase letters, hyphens (-), and forward slashes (/).
     Default: quickstart-uipath-robot/
-    Description: S3 key prefix that is used to simulate a directory for your copy of the 
+    Description: >-
+      S3 key prefix that is used to simulate a directory for your copy of the 
       Quick Start assets. Keep the default prefix unless you are customizing 
       the template. Changing this prefix updates code references to point to 
       a new Quick Start location. This prefix can include numbers, lowercase 
