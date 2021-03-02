@@ -46,7 +46,7 @@ image::../images/ds1.png[ds1,width=100%,height=100%]
 
 == Create IAM user
 
-To launch the Cloudformation stack for this Quick Start, you’ll need an IAM user with programmatic access to following AWS services:
+A user login with programmatic access to following AWS services is required to launch the Quick Start CloudFormation stack.
 
 * AWS CloudFormation
 * AWS IAM, Amazon EC2
