@@ -36,8 +36,6 @@ Each deployment takes about {deployment_time} to complete.
 ^|https://fwd.aws/mpGPN[View template^]
 |===
 
-NOTE: When you deploy UiPath Robot, choose at least two Availability Zones within your Region. Make sure that the number of Availability Zones matches the number you chose for this deployment. This Quick Start creates public subnets, private subnets, and https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html[NAT gateways^] to allow instances to download packages and software without exposing them to the internet.
-
 [start=2]
 . Check the AWS Region displayed in the upper-right corner of the navigation bar, and change it if necessary. This Region is where the network infrastructure for {partner-product-short-name} is built. The template launches in the {default_deployment_region} Region by default.
 
