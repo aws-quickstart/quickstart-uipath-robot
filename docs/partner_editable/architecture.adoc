@@ -11,12 +11,12 @@ image::../images/uipath-robot-aws-architecture-diagram.png[Architecture,width=10
 As shown in <<architecture1>>, the Quick Start sets up the following:
 
 * A highly available architecture that spans two or more Availability Zones.
-* A virtual private cloud (VPC) configured with public and private subnets, according to AWS
+* A VPC configured with public and private subnets, according to AWS
 best practices, to provide you with your own virtual network on AWS.*
 * In the public subnets:
 ** Elastic IP addresses associated with the network address translation (NAT) gateways.
 ** Managed NAT gateways to allow outbound internet access for resources in the private subnets.
-** A Windows bastion host to allow inbound remote desktop protocol (RDP) access to Amazon Elastic Compute Cloud (Amazon EC2) instances in private subnets.
+** A Windows bastion host to allow inbound Remote Desktop Protocol (RDP) access to Amazon Elastic Compute Cloud (Amazon EC2) instances in private subnets.
 * In the private subnets:
 ** Amazon EC2 instances to host UiPath Robot.
 

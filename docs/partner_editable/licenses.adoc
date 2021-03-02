@@ -1,6 +1,6 @@
 // Include details about the license and how they can sign up. If no license is required, clarify that. 
 
-This Quick Start only installs UiPath Robot. It does not require a UiPath Orchestrator instance. However, you must configure UiPath Robot manually if you decide to connect it to UiPath Orchestrator. This deployment supports UiPath Orchestrator version 20.4.x and later. 
+This Quick Start only installs UiPath Robot. It does not require a UiPath Orchestrator instance. If you decide to connect it to UiPath Orchestrator, you must configure UiPath Robot manually. This deployment supports UiPath Orchestrator version 20.4.x and later. 
 
 The Quick Start uses only AWS-provided Microsoft Windows images and does not require a subscription to the Amazon Machine Image (AMI).
 
