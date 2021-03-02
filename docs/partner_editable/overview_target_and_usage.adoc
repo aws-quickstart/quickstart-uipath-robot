@@ -2,6 +2,6 @@
 // Identify your target audience and explain how/why they would use this Quick Start.
 //Avoid borrowing text from third-party websites (copying text from AWS service documentation is fine). Also, avoid marketing-speak, focusing instead on the technical aspect.
 
-This Quick Start reference deployment guide provides step-by-step instructions for deploying UiPath Robot on AWS. UiPath Robot is the implementation agent of the UiPath robotic process automation (RPA) suite. Whereas automation processes are designed in UiPath Studio, these processes are run by UiPath Robot. The management application of the UiPath suite is UiPath Orchestrator, the centralized robot management tool where you can deploy, secure, and manage your UiPath robots at scale.
+This Quick Start reference deployment guide provides step-by-step instructions for deploying UiPath Robot on AWS. UiPath Robot is the implementation agent of the UiPath robotic process automation (RPA) suite. Whereas automation processes are designed in UiPath Studio, these processes are run by UiPath Robot. UiPath Robots can be deployed, secured, and managed at scale using UiPath Orchestrator, the centralized robot management tool from UiPath.
 
 TIP: This Quick Start deploys UiPath Robot. A Quick Start reference deployment for https://fwd.aws/DqQDx[UiPath Orchestrator on the AWS Cloud] is also available.
