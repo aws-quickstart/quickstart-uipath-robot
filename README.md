@@ -1,6 +1,6 @@
 # UiPath Robot on the AWS Cloud 
 
-For architectural details, step-by-step instructions, and customization options, see the [deployment guide](https://fwd.aws/4kkj7).
+For architectural details, step-by-step instructions, and customization options, see the [deployment guide](https://fwd.aws/jNwkj).
 
 To post feedback, submit feature ideas, or report bugs, use the **Issues** section of this GitHub repo. 
 

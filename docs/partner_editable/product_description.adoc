@@ -2,21 +2,4 @@
 // Briefly describe the software. Use consistent and clear branding. 
 // Include the benefits of using the software on AWS, and provide details on usage scenarios.
 
-UiPath Robot is the implementation agent used to run processes developed in UiPath Studio. In order to run processes, UiPath Robots must be either connected to UiPath Orchestrator or be licensed locally. UiPath Orchestrator is theFor more information, see the https://docs.uipath.com/robot/docs/introduction[UiPath Robot Guide].
-With this Quick Start, you can take advantage of the elasticity of the AWS Cloud to set up, operate, and scale robotic process automation (RPA). The architecture AWS offers provides cost-efficient and resizable capacity to scale your robots to meet your business needs. Each UIPath Robot deploys on one Amazon EC2 instance
-
-
-in an architecture based on AWS best practices for security and high availability. AWS provides cost-efficient and resizable capacity, and scales resources to meet your specific workload. This Quick Start also offers . For more information, see link:#_architecture[Architecture], later in this guide.
-
-
-With this Quick Start, you can deploy the following types of UiPath Robots:
-
-*	Attended Robot: This type is triggered by user events and operates alongside a user by sharing the same workstation. Attended Robots are used with Orchestrator for centralized process deployment and logging. They can also add data to a processing queue for Unattended Robots.
-*	Unattended Robot: This type runs in a virtual environment and can automate any number of processes. In addition to the capabilities of an Attended Robot, 
-//TODO Why is Orchestrator mentioned? Needs more context.
-Orchestrator is responsible for remote execution, monitoring, scheduling, and providing support for work queues.
-
-You can run debugging processes in UiPath Studio using either Robot type.
-
-Amazon may share user-deployment information with the AWS Partner that collaborated with AWS on the Quick Start.
-
+UiPath Robot is the agent that runs processes designed in UiPath Studio. A UiPath Robot is split into several components, each being dedicated to a particular automation task. This design allows you to run, identify, and track the work of each component. With UIPath Robots, you can capture data from user interfaces, manipulate applications, and communicate with other systems to perform repetitive business processes. Depending on its license, a UiPath software robot can be attended or unattended. For more information, see https://docs.uipath.com/robot/docs/introduction[Introduction] and https://docs.uipath.com/robot/docs/about-licensing[About Licensing] in the UiPath Robot Guide.

@@ -3,31 +3,19 @@
 
 == Test the deployment
 // If steps are required to test the deployment, add them here. If not, remove the heading
-If you provided an Orchestrator URL, log in to Orchestrator, and ensure that the Robot is present and connected to the tenant.
+If you provided a UiPath Orchestrator URL during deployment, log in to UiPath Orchestrator. Then, verify that the UiPath Robot is present and connected to the tenant.
+
 :xrefstyle: short
 [#test1]
 .Test the deployment
 image::../images/test1.png[test1,width=100%,height=100%]
 
-[NOTE]
-====
-The deployment creates a *MODERN* folder called *AWSDeployed*, which contains the UiPath Robot.
+The deployment creates a *MODERN* directory called *AWSDeployed*, which contains UiPath Robot.
 
-Depending on the type of Robot you selected, you will encounter the following situations:
+* For an unattended UiPath software robot, the *STATUS* is *N/A* because the new local administrator account is not yet logged in. However, you can run jobs.
+* For an attended UiPath software robot, the *STATUS* is *DISCONNECTED* because the built-in administrator account is not logged in.
 
-* For Unattended Robot, the *STATUS* is *N/A*, but you will be able to run jobs on the machine. This happens because the new local administrator account created by the deployment is not logged in to the machine. 
-* For Attended Robot, the *STATUS* is *DISCONNECTED* because the built-in administrator account is not logged into the machine.
-====
-
-Access the Robot VM from the bastion host to check that the Robot was deployed successfully. 
-[NOTE]
-==== 
-For Attended Robot, connect to it through the administrator account. To retrieve the password for the AWS portal, use your private key, mentioned in the deployment.
-
-For Unattended Robot, retrieve the user account from the Robots page in Orchestrator. The user format is `domain/username` or `machinename/username`. Use the same password that you set in the configuration step.
-====
-
-The result should like like <<test2>>
+Access the UiPath Robot VM from the bastion host to check that it is deployed successfully. Connect to an attended UiPath software robot through the administrator account. To retrieve the password, use your private key. For an unattended robot, retrieve the user account from the *Robots* page in UiPath Orchestrator. The user format is `domain/username` or `machinename/username`. Use the same password you used during deployment.
 
 :xrefstyle: short
 [#test2]
@@ -39,7 +27,7 @@ image::../images/test2.png[test2,width=100%,height=100%]
 
 == Create a key pair
 
-Amazon EC2 uses public-key cryptography to encrypt and decrypt login information. In Windows instances, the key pair obtains the administrator password via the Amazon EC2 console and then logs in using Remote Desktop Protocol (RDP). On Linux, the key pair authenticates the SSH (Secure Shell) login. For more information, see https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[Amazon EC2 key pairs and Linux instances^].
+Amazon EC2 uses public-key cryptography to encrypt and decrypt login information. In Windows instances, the key pair obtains the administrator password from the Amazon EC2 console and then logs in using RDP. On Linux, the key pair authenticates the SSH (Secure Shell) login. For more information, see https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[Amazon EC2 key pairs and Linux instances^].
 
 To create a key pair in your preferred Region, do the following:
 
@@ -58,7 +46,7 @@ image::../images/ds1.png[ds1,width=100%,height=100%]
 
 == Create IAM user
 
-To launch the Cloudformation stack for this Quick Start, you’ll need an IAM user with programmatic access to following AWS services:
+A user login with programmatic access to following AWS services is required to launch the Quick Start CloudFormation stack.
 
 * AWS CloudFormation
 * AWS IAM, Amazon EC2
@@ -112,14 +100,13 @@ image::../images/iam_4.png[IAM,width=100%,height=100%]
 image::../images/iam_5.png[IAM,width=100%,height=100%]
 
 
-
 == Best practices for using {partner-product-short-name} on AWS
 // Provide post-deployment best practices for using the technology on AWS, including considerations such as migrating data, backups, ensuring high performance, high availability, etc. Link to software documentation for detailed information.
 
 === High availability and disaster recovery
-Amazon EC2 provides the ability to place instances in multiple locations composed of AWS Regions and Availability Zones. Regions are dispersed and located in separate geographic areas. Availability Zones are distinct locations within a Region that are engineered to be isolated from failures in other Availability Zones. They provide inexpensive, low-latency network connectivity to other Availability Zones in the same Region.
+Amazon EC2 provides the ability to place instances in multiple locations composed of AWS Regions and Availability Zones. Regions are dispersed and located in separate geographic areas. Availability Zones are distinct locations within a Region isolated from failures in other Availability Zones. They provide inexpensive, low-latency network connectivity to other Availability Zones in the same Region.
 
-By launching your instances in separate Regions, you can design your application to be physically closer to specific customers or to meet legal or other requirements. By launching your instances in separate Availability Zones, you can protect your applications from the failure of a single location. Microsoft Exchange provides infrastructure features that complement the high availability and disaster recovery scenarios supported in the AWS Cloud.
+To make sure that an application is closer to certain customers, or for legal or design requirements, you can launch instances in separate Regions. By launching your instances in separate Availability Zones, you can protect your applications from the failure of a single location. Microsoft Exchange provides infrastructure features that complement the high availability and disaster recovery (DR) scenarios supported in the AWS Cloud.
 
 The Quick Start also provides the option to deploy into a minimum of two Availability Zones. This option mitigates the loss of quorum in the case of a failure of a single node. However, you can choose this option only in AWS Regions that include two or more Availability Zones. For a current list of Availability Zones, see https://aws.amazon.com/about-aws/global-infrastructure/[AWS Global Infrastructure^].
 
@@ -129,9 +116,7 @@ To customize UiPath software for your business, IT, and security requirements, c
 // Provide post-deployment best practices for using the technology on AWS, including considerations such as migrating data, backups, ensuring high performance, high availability, etc. Link to software documentation for detailed information.
 
 === Security groups and firewalls
-When Amazon EC2 instances are launched, they must be associated with a security group, which acts as a stateful firewall. You have complete control over the network traffic entering or leaving the security group. You can build granular rules that are scoped by protocol, port number, and source, destination IP address, or subnet. By default, all outbound traffic from security group is permitted. Inbound traffic, however, must be configured to allow the appropriate traffic to reach your instances.
-
-We recommend that you tightly control inbound traffic. Doing this reduces the attack surface of your EC2 instances yet leaves the following ports open for application communication.
+When Amazon EC2 instances are launched, they must be associated with a security group, which acts as a stateful firewall. You have complete control over the security group’s inbound and outbound network traffic. You can build granular rules that are scoped by protocol, port number, and source/destination IP address, or other security groups. By default, all outbound traffic from security group is permitted. Inbound traffic, however, must be configured to allow the appropriate traffic to reach your instances. We recommend that you tightly control inbound traffic. Doing this reduces the attack surface of your EC2 instances yet leaves the following ports open for application communication.
 
 *UiPath Robot TCP ports*
 
@@ -164,7 +149,7 @@ For more information, see https://docs.uipath.com/orchestrator/docs/security-bes
 //Provide any other information of interest to users, especially focusing on areas where AWS or cloud usage differs from on-premises usage.
 
 === Security of the AWS infrastructure
-AWS provides a set of building blocks, such as Amazon EC2 and Amazon VPC, that you can use to provision your application's infrastructure. AWS operates under a shared security responsibility model, where AWS is responsible for the security of the underlying cloud infrastructure and you are responsible for securing workloads you deploy in AWS. For more information, see https://docs.aws.amazon.com/whitepapers/latest/introduction-aws-security/introduction-aws-security.pdf[Introduction to AWS Security^]. 
+AWS provides a set of building blocks, such as Amazon EC2 and Amazon VPC, that you can use to provision your application’s infrastructure. AWS operates under a shared security responsibility model. AWS is responsible for the security of the underlying cloud infrastructure and you are responsible for securing workloads you deploy in AWS. For more information, see https://docs.aws.amazon.com/whitepapers/latest/introduction-aws-security/introduction-aws-security.pdf[Introduction to AWS Security^]. 
 
 
 == Resources

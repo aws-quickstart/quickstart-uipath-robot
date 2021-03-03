@@ -3,5 +3,6 @@
 ==== Prepare your AWS account
 
 ===== Key pair 
-Ensure that at least one Amazon EC2 key pair exists in your AWS account in your Region. Note the key-pair name because you will need it during deployment. For more information, see https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[Amazon EC2 key pairs and Linux instances^]. +
-For testing or proof-of-concept purposes, we recommend creating a new key pair instead of using one that’s already in use by a production instance.
+Make sure that at least one Amazon EC2 key pair exists in your AWS account in your Region. Note the key-pair name because you will need it during deployment. For more information, see https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[Amazon EC2 key pairs and Linux instances^].
+
+For testing or proof-of-concept purposes, we recommend creating a new key pair instead of using one that’s already in use by a production instance. For more information, see link:#_create_a_key_pair[Create a key pair], later in this guide.
