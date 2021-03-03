@@ -128,7 +128,7 @@ image::../images/security1.png[security1,width=50%,height=50%]
 * 3389 for RDP access
 * 443 for communication with UiPath Orchestrator
 
-This Quick Start configures the following security groups for the UiPath stack:
+This Quick Start configures the following security groups:
 
 [cols="25,25,25,25",grid="rows",frame="topbot", options="header"]
 |===
