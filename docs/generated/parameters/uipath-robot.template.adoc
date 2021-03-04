@@ -1,22 +1,12 @@
 
-.Availability Zone configuration
-[width="100%",cols="16%,11%,73%",options="header",]
-|===
-|Parameter label (name) |Default value|Description|Availability Zones
-(`AvailabilityZones`)|`**__Requires input__**`|List of Availability Zones to use for the subnets in the VPC. A maximum of three Availability Zones are used for this deployment.|Number of Availability Zones to use
-(`NumberOfAZs`)|`2`|Number of Availability Zones to use in the VPC. Must match the number of Availability Zones chosen in the *Availability Zones* parameter.
-|===
 .Network configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
 |Parameter label (name) |Default value|Description|VPC CIDR
-(`VPCCIDR`)|`10.0.0.0/16`|CIDR block for the VPC, in the format x.x.0.0/16.|Public subnet 1 tag
-(`PublicSubnetTag1`)|`Network=Public1`|(Optional) Tag to add to public subnet 1, in format Key=Value.|Public subnet 2 tag
-(`PublicSubnetTag2`)|`Network=Public2`|(Optional) Tag to add to public subnet 2, in format Key=Value.|Public subnet 3 tag
-(`PublicSubnetTag3`)|`Network=Public3`|(Optional) Tag to add to public subnet 3, in format Key=Value.|Private subnet 1 tag
-(`PrivateSubnetTag1`)|`Network=Private1`|(Optional) Tag to add to private subnet 1, in format Key=Value.|Private subnet 2 tag
-(`PrivateSubnetTag2`)|`Network=Private2`|(Optional) Tag to add to private subnet 2, in format Key=Value.|Private subnet 3 tag
-(`PrivateSubnetTag3`)|`Network=Private3`|(Optional) Tag to add to private subnet 3, in format Key=Value.
+(`VPCCIDR`)|`10.0.0.0/16`|CIDR block for the VPC, in the format x.x.0.0/16.|VPC ID
+(`VPCID`)|`**__Requires input__**`|ID of the VPC where the UiPath Robot is created.|Private subnet
+(`PrivateSubnetID`)|`**__Requires input__**`|Private subnet with UiPath Robot.|Public subnet
+(`PublicSubnetID`)|`**__Requires input__**`|Public subnet with bastion host to access UiPath Robot.
 |===
 .Robot VM configuration
 [width="100%",cols="16%,11%,73%",options="header",]
@@ -28,10 +18,10 @@
 .UiPath Robot configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
-|Parameter label (name) |Default value|Description|UiPath Robot version
-(`RobotVersion`)|`20.10.2`|UIPath Robot version to install.|UiPath Robot type (attended/unattended)
+|Parameter label (name) |Default value|Description|UiPath Robot version.
+(`RobotVersion`)|`20.10.2`|UIPath Robot version to install.|UiPath Robot type (attended or unattended)
 (`RobotType`)|`Attended`|Choose the type of UiPath Robot you want to install (attended or unattended).|Administrator password
-(`AdminPassword`)|`**__Requires input__**`|Windows administrator password for UiPath Robot.|UiPath Orchestrator URL
+(`AdminPassword`)|`**__Requires input__**`|Windows administrator password for UiPath Robot.|URL of an existing and licensed Orchestrator
 (`OrchestratorURL`)|`**__Requires input__**`|UiPath Orchestrator URL.|UiPath Robot tenant name
 (`OrchestratorTenant`)|`default`|Tenant name where the UiPath Robot is created.|UiPath Orchestrator API username
 (`OrchestratorAPIUser`)|`**__Requires input__**`|UiPath Orchestrator API username. This must have a role with permissions to add and create robots.|UiPath Orchestrator API password
