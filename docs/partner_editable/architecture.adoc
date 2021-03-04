@@ -14,10 +14,13 @@ As shown in <<architecture1>>, the Quick Start sets up the following:
 * A VPC configured with public and private subnets, according to AWS
 best practices, to provide you with your own virtual network on AWS.*
 * In the public subnets:
-** Managed NAT gateways to allow outbound internet access for resources in the private subnets.
-** A Windows bastion host to allow inbound Remote Desktop Protocol (RDP) access to Amazon Elastic Compute Cloud (Amazon EC2) instances in private subnets.
+** Managed NAT gateways to allow outbound internet access for resources in the private subnets.*
+** A Windows bastion host to allow inbound Remote Desktop Protocol (RDP) access to Amazon Elastic Compute Cloud (Amazon EC2) instances in private subnets.*
+** A security group controlling inbound and outbound traffic to the bastion host instances.
 * In the private subnets:
 ** Amazon EC2 instances to host UiPath Robot.
+** A security group controlling inbound and outbound traffic to the UiRobot instances.
+
 
 [.small]#*The template that deploys the Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.#
 
