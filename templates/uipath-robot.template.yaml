@@ -42,9 +42,9 @@ Metadata:
       VPCID:
         default: VPC ID
       PrivateSubnetID:
-        default: Private subnet
+        default: Private subnet IDs
       PublicSubnetID:
-        default: Public subnet
+        default: Public subnet IDs
       KeyPairName:
         default: Instance key pair
       InstanceType:
