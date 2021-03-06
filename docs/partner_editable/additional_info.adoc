@@ -3,31 +3,19 @@
 
 == Test the deployment
 // If steps are required to test the deployment, add them here. If not, remove the heading
-If you have provided an Orchestrator URL then login to Orchestrator and check if the Robot is present in the tenant provided and connected.
+If you provided a UiPath Orchestrator URL during deployment, log in to UiPath Orchestrator. Then, verify that the UiPath Robot is present and connected to the tenant.
+
 :xrefstyle: short
 [#test1]
 .Test the deployment
 image::../images/test1.png[test1,width=100%,height=100%]
 
-[NOTE]
-====
-The deployment will create a new MODERN folder called AWSDeployed. In it you will find the newly created UiPath Robot. 
+The deployment creates a *MODERN* directory called *AWSDeployed*, which contains UiPath Robot.
 
-Depending on the type of the Robot you selected you will encounter the following situations:
+* For an unattended UiPath software robot, the *STATUS* is *N/A* because the new local administrator account is not yet logged in. However, you can run jobs.
+* For an attended UiPath software robot, the *STATUS* is *DISCONNECTED* because the built-in administrator account is not logged in.
 
-* For Unattended robot, be aware that the STATUS will be N/A but you will be able to run jobs on the machine. This happens because the new local admin account created by the deployment is not logged into the machine. 
-* For Attended Robot the STATUS will be DISCONNECTED because the built-in Administrator account is not logged into the machine.
-====
-
-Check if the Robot was deployed successfully by accessing the Robot VM from the Bastion Host. 
-[NOTE]
-==== 
-For Attended Robot connect with the Administrator account. You will retrieve the password for the AWS portal by using your private key mentioned in the deployment.
-
-For Unattended Robot, you will retrieve the user account from the Robots page in Orchestrator. The user format is: domain/username OR machinename/username. The password is the one you provided in the deployment at the UiPath Robot Configuration step.
-====
-
-The result should like like <<test2>>
+Access the UiPath Robot VM from the bastion host to check that it is deployed successfully. Connect to an attended UiPath software robot through the administrator account. To retrieve the password, use your private key. For an unattended robot, retrieve the user account from the *Robots* page in UiPath Orchestrator. The user format is `domain/username` or `machinename/username`. Use the same password you used during deployment.
 
 :xrefstyle: short
 [#test2]
@@ -37,53 +25,110 @@ image::../images/test2.png[test2,width=100%,height=100%]
 // == Post-deployment steps
 // If post-deployment steps are required, add them here. If not, remove the heading
 
+== Create a key pair
+
+Amazon EC2 uses public-key cryptography to encrypt and decrypt login information. In Windows instances, the key pair obtains the administrator password from the Amazon EC2 console and then logs in using RDP. On Linux, the key pair authenticates the SSH (Secure Shell) login. For more information, see https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[Amazon EC2 key pairs and Linux instances^].
+
+To create a key pair in your preferred Region, do the following:
+
+[start=1]
+. In your AWS Management Console, choose an AWS Region.
+. On the *Services* menu, choose *EC2*.
+. Under *Network and Security*, choose *Key Pairs*.
+. Choose *Create Key Pair*.
+. Enter a name and choose *Create*.
+
+:xrefstyle: short
+[#ds1]
+.Create a key pair
+image::../images/ds1.png[ds1,width=100%,height=100%]
+
+
+== Create IAM user
+
+A user login with programmatic access to following AWS services is required to launch the Quick Start CloudFormation stack.
+
+* AWS CloudFormation
+* AWS IAM, Amazon EC2
+* Amazon S3
+* AWS Lambda
+* AWS Storage Gateway.
+
+NOTE: If you do already have an IAM user with full access to these services, or have administrator access, you can skip this section.
+
+[start=1]
+:xrefstyle: short
+. If you do not already have such an IAM user, https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console[create one^] from AWS console. In <<cfnuser>>, a user is created with programmatic and console access.
+
+[#cfnuser]
+.Adding an IAM user
+image::../images/cfnuser.png[IAM,width=100%,height=100%]
+
+[start=2]
+. To follow AWS best practices, allow access to required services. When setting permissions for the user, choose *Attach existing policies directly*. Then choose roles with full access for each of the services listed previously.
+
+:xrefstyle: short
+[#iam_2]
+.Setting permissions
+image::../images/iam_2.png[IAM,width=100%,height=100%]
+
+TIP: As shown in <<iam_2>>, you can filter the list using the search box.
+
+[start=3]
+. Choose *Next: Tags* and optionally add a Name tag to identify the user.  
++
+:xrefstyle: short
+[#iam_3]
+.Adding optional tags
+image::../images/iam_3.png[IAM,width=100%,height=100%]
+
+[start=4]
+. Choose *Next: Review* and verify that the user is configured with full access to the services listed previously.  
++
+:xrefstyle: short
+[#iam_4]
+.Reviewing user details
+image::../images/iam_4.png[IAM,width=100%,height=100%]
+
+[start=5]
+. Choose *Create User*.
+. Choose *Download .csv* to download and store the user's security credentials in CSV format for future reference.
+
+:xrefstyle: short
+[#iam_5]
+.IAM user created
+image::../images/iam_5.png[IAM,width=100%,height=100%]
+
+
 == Best practices for using {partner-product-short-name} on AWS
 // Provide post-deployment best practices for using the technology on AWS, including considerations such as migrating data, backups, ensuring high performance, high availability, etc. Link to software documentation for detailed information.
 
-=== High Availability and Disaster Recovery
-Amazon EC2 provides the ability to place instances in multiple locations composed of AWS Regions and Availability Zones. Regions are dispersed and located in separate geographic areas. Availability Zones are distinct locations within a Region that are engineered to be isolated from failures in other Availability Zones and that provide inexpensive, low-latency network connectivity to other Availability Zones in the same Region.
+=== High availability and disaster recovery
+Amazon EC2 provides the ability to place instances in multiple locations composed of AWS Regions and Availability Zones. Regions are dispersed and located in separate geographic areas. Availability Zones are distinct locations within a Region isolated from failures in other Availability Zones. They provide inexpensive, low-latency network connectivity to other Availability Zones in the same Region.
 
-By launching your instances in separate Regions, you can design your application to be closer to specific customers or to meet legal or other requirements. By launching your instances in separate Availability Zones, you can protect your applications from the failure of a single location. Exchange provides infrastructure features that complement the high availability and disaster recovery scenarios supported in the AWS Cloud.
+To make sure that an application is closer to certain customers, or for legal or design requirements, you can launch instances in separate Regions. By launching your instances in separate Availability Zones, you can protect your applications from the failure of a single location. Microsoft Exchange provides infrastructure features that complement the high availability and disaster recovery (DR) scenarios supported in the AWS Cloud.
 
-The architecture built by this Quick Start supports AWS best practices for high availability and security.
+The Quick Start also provides the option to deploy into a minimum of two Availability Zones. This option mitigates the loss of quorum in the case of a failure of a single node. However, you can choose this option only in AWS Regions that include two or more Availability Zones. For a current list of Availability Zones, see https://aws.amazon.com/about-aws/global-infrastructure/[AWS Global Infrastructure^].
 
-The Quick Start also provides an option to deploy into minimum two Availability Zones. This deployment option can mitigate the loss of quorum in the case of a failure of a single node. However, you can select this option only in AWS Regions that include two or more Availability Zones; for a current list, see https://aws.amazon.com/about-aws/global-infrastructure/[AWS Global Infrastructure].
-
-We recommend that you consult the https://docs.uipath.com/[UiPath docs] and customize some of the steps described in this guide or add ones to deploy a solution that best meets your business, IT, and security requirements.
-
+To customize UiPath software for your business, IT, and security requirements, consult the https://docs.uipath.com/[UiPath Documentation Portal^].
 
 == Security
 // Provide post-deployment best practices for using the technology on AWS, including considerations such as migrating data, backups, ensuring high performance, high availability, etc. Link to software documentation for detailed information.
 
-When the EC2 instances are launched, they must be associated with a security group, which acts as a stateful firewall. You have complete control over the network traffic entering or leaving the security group, and you can build granular rules that are scoped by protocol, port number, and source or destination IP address or subnet. By default, all traffic egressing a security group is permitted. Ingress traffic, on the other hand, must be configured to allow the appropriate traffic to reach your instances.
+=== Security groups and firewalls
+When Amazon EC2 instances are launched, they must be associated with a security group, which acts as a stateful firewall. You have complete control over the security group’s inbound and outbound network traffic. You can build granular rules that are scoped by protocol, port number, and source/destination IP address, or other security groups. By default, all outbound traffic from security group is permitted. Inbound traffic, however, must be configured to allow the appropriate traffic to reach your instances. We recommend that you tightly control inbound traffic. Doing this reduces the attack surface of your EC2 instances yet leaves the following ports open for application communication.
 
-We recommend that you tightly control ingress traffic, so that you reduce the attack surface of your EC2 instances but allowing following ports open for application communication:
-
-Robot
+*UiPath Robot TCP ports*
 
 :xrefstyle: short
 [#security1]
-.Test the deployment
+.TCP ports
 image::../images/security1.png[security1,width=50%,height=50%]
 
-[cols="20,80",grid="rows",frame="topbot" caption=]
-.Robot Ports
-|===
-|3389
-|RDP access
+* 3389 for RDP access
+* 443 for communication with UiPath Orchestrator
 
-|443
-|communication with Orchestrator
-|===
-
-For UiPath Orchestrator security best practices, do refer to https://docs.uipath.com/orchestrator/docs/security-best-practices[UiPath docs]
-
-== Other useful information
-//Provide any other information of interest to users, especially focusing on areas where AWS or cloud usage differs from on-premises usage.
-
-AWS provides a set of building blocks (for example, Amazon EC2 and Amazon VPC) that you can use to provision infrastructure for your applications. In this model, some security capabilities, such as physical security, are the responsibility of AWS and are highlighted in the AWS security whitepaper. Other areas, such as controlling access to applications, fall on the application developer and the tools provided in the Microsoft or Linux (RHEL) ecosystem.
-
-This Quick Start configures the following security groups for UiPath Stack (Robot or Orchestrator):
+This Quick Start configures the following security groups:
 
 [cols="25,25,25,25",grid="rows",frame="topbot", options="header"]
 |===
@@ -99,63 +144,20 @@ This Quick Start configures the following security groups for UiPath Stack (Robo
 Outbound: any ports
 |===
 
-== Create a key pair
+For more information, see https://docs.uipath.com/orchestrator/docs/security-best-practices[Security Best Practices^]. 
 
-. Create a https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[key pair] in your preferred region. To do this, in the navigation pane of the Amazon EC2 console, choose *Key Pairs, Create Key Pair*, type a name, and then choose *Create.*
+//Provide any other information of interest to users, especially focusing on areas where AWS or cloud usage differs from on-premises usage.
 
-Amazon EC2 uses public-key cryptography to encrypt and decrypt login information. To be able to log into your instances, you must create a key pair. With Windows instances, we use the key pair to obtain the administrator password via the Amazon EC2 console and then log in using Remote Desktop Protocol (RDP) as explained in the https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair[step-by-step instructions] in the _Amazon Elastic Compute Cloud User Guide._ On Linux, we use the key pair to authenticate SSH login.
+=== Security of the AWS infrastructure
+AWS provides a set of building blocks, such as Amazon EC2 and Amazon VPC, that you can use to provision your application’s infrastructure. AWS operates under a shared security responsibility model. AWS is responsible for the security of the underlying cloud infrastructure and you are responsible for securing workloads you deploy in AWS. For more information, see https://docs.aws.amazon.com/whitepapers/latest/introduction-aws-security/introduction-aws-security.pdf[Introduction to AWS Security^]. 
 
-:xrefstyle: short
-[#ds1]
-.Create a Key Pair
-image::../images/ds1.png[ds1,width=100%,height=100%]
 
-== Create an IAM User
+== Resources
 
-To launch the Cloudformation stack for this quickstart, you’ll need to use a user login that has programmatic access to following AWS services:
-
-[lowerroman]
-. AWS CloudFormation
-. AWS IAM, Amazon EC2
-. Amazon S3
-. AWS Lambda
-. AWS Storage Gateway.
-
-If you do already have an IAM user that has full access to the above services, or have Admin access, you can skip this step.
-
-. If you do not already have such an IAM user, create an IAM user from AWS console. In the example below, a user “cfnuser” is being created allowing programmatic access and console access.
-+
-:xrefstyle: short
-[#ds2]
-.Create an IAM User
-image::../images/ds2.png[ds2,width=100%,height=100%]
-+
-. In order to follow AWS best practices, allow access to the required services. In order to do so, you can choose to attach existing policies. Then type first few letters of each service name and select to choose the FullAccess roles from the filtered list. The example here shows the screen for adding AmazonEC2FullAccess.  
-+
-:xrefstyle: short
-[#ds3]
-.Create an IAM User
-image::../images/ds3.png[ds3,width=100%,height=100%]
-+
-Repeat this step for all 10 services listed above.
-+
-. Click on Next: Tags, and optionally add a Name tag to identify the user.
-+  
-:xrefstyle: short
-[#ds4]
-.Create an IAM User
-image::../images/ds4.png[ds4,width=100%,height=100%]
-+
-. Click on Next: Review and review to ensure that full access to all 10 listed services have been granted to the user.  
-+
-:xrefstyle: short
-[#ds5]
-.Create an IAM User
-image::../images/ds5.png[ds5,width=100%,height=100%]
-+
-. Click on Create User to have the user created, and finally download the credential as CSV and store it in a secure location for future referral, if needed.
-+
-:xrefstyle: short
-[#ds6]
-.Create an IAM User
-image::../images/ds6.png[ds6,width=100%,height=100%]
+* https://aws.amazon.com/cloudformation/[AWS CloudFormation^]
+* https://aws.amazon.com/vpc/[Amazon VPC^]
+* https://aws.amazon.com/ec2/[Amazon EC2^]
+* https://aws.amazon.com/iam/[AWS IAM^]
+* https://aws.amazon.com/s3/[Amazon S3^]
+* https://aws.amazon.com/storagegateway/[AWS Storage Gateway^]
+* https://aws.amazon.com/lambda/[AWS Lambda^]

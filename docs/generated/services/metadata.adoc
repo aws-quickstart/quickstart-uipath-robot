@@ -8,6 +8,7 @@
 :template_aws_lambda_function:
 :template_cloudformation:
 :template_custom_hostinstanceami:
+:template_deterministic_ec2_instances:
 :template_ec2:
 :template_hostinstanceami:
 :template_iam:

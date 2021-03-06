@@ -1,46 +1,46 @@
 
-.Availability Zone Configuration
+.Availability Zone configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
-|Parameter label (name) |Default value|Description|Availability Zone(s) selection
-(`AvailabilityZones`)|`**__Requires input__**`|List of Availability Zones to use for the subnets in the VPC - maximum of 3 AZs are used for this deployment (logical order of your selections is preserved).|Number of AZs to use
-(`NumberOfAZs`)|`2`|Number of Availability Zones to use in the VPC (upto 3), must match your selections in the list of Availability Zones parameter.
+|Parameter label (name) |Default value|Description|Availability Zones
+(`AvailabilityZones`)|`**__Requires input__**`|List of Availability Zones to use for the subnets in the VPC. A maximum of three Availability Zones are used for this deployment.|Number of Availability Zones to use
+(`NumberOfAZs`)|`2`|Number of Availability Zones to use in the VPC. Must match the number of Availability Zones chosen in the *Availability Zones* parameter.
 |===
-.Network Configuration
+.Network configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
 |Parameter label (name) |Default value|Description|VPC CIDR
-(`VPCCIDR`)|`10.0.0.0/16`|CIDR block for the VPC, must be in the form x.x.0.0/16.|Public subnet 1 tag
-(`PublicSubnetTag1`)|`Network=Public1`|Tag to add to public subnet 1 in format Key=Value (Optional)|Public subnet 2 tag
-(`PublicSubnetTag2`)|`Network=Public2`|Tag to add to public subnet 2 in format Key=Value (Optional).|Public subnet 3 tag
-(`PublicSubnetTag3`)|`Network=Public3`|Tag to add to public subnet 3 in format Key=Value (Optional).|Private subnet 1 tag
-(`PrivateSubnetTag1`)|`Network=Private1`|Tag to add to private subnet 1 in format Key=Value (Optional).|Private subnet 2 tag
-(`PrivateSubnetTag2`)|`Network=Private2`|Tag to add to private subnet 2 in format Key=Value (Optional).|Private subnet 3 tag
-(`PrivateSubnetTag3`)|`Network=Private3`|Tag to add to private subnet 3 in format Key=Value (Optional).
+(`VPCCIDR`)|`10.0.0.0/16`|VPC CIDR block, in format x.x.0.0/16.|Public subnet 1 tag
+(`PublicSubnetTag1`)|`Network=Public1`|(Optional) Tag to add to public subnet 1, in format Key=Value.|Public subnet 2 tag
+(`PublicSubnetTag2`)|`Network=Public2`|(Optional) Tag to add to public subnet 2, in format Key=Value.|Public subnet 3 tag
+(`PublicSubnetTag3`)|`Network=Public3`|(Optional) Tag to add to public subnet 3, in format Key=Value.|Private subnet 1 tag
+(`PrivateSubnetTag1`)|`Network=Private1`|(Optional) Tag to add to private subnet 1, in format Key=Value.|Private subnet 2 tag
+(`PrivateSubnetTag2`)|`Network=Private2`|(Optional) Tag to add to private subnet 2, in format Key=Value.|Private subnet 3 tag
+(`PrivateSubnetTag3`)|`Network=Private3`|(Optional) Tag to add to private subnet 3, in format Key=Value.
 |===
-.Robot VM Configuration
+.Robot VM configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
-|Parameter label (name) |Default value|Description|Instance Key pair
-(`KeyPairName`)|`**__Requires input__**`|Existing Key Pair, which is to be used to Log in to VM instances.|Instance type
-(`InstanceType`)|`t2.medium`|EC2 instance type
+|Parameter label (name) |Default value|Description|Instance key pair
+(`KeyPairName`)|`**__Requires input__**`|Key pair used to log in to virtual machine (VM) instances.|Instance type
+(`InstanceType`)|`t2.medium`|EC2 instance type.
 |===
-.UiPath Robot Configuration
+.UiPath Robot configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
-|Parameter label (name) |Default value|Description|UiPath Robot version.
-(`RobotVersion`)|`20.10.2`|UIPath Robot Version to be installed.|UiPath Robot type (attended/unattended).
-(`RobotType`)|`Attended`|Choose what type of UiPath Robot you want to be installed. Options are: Attended or Unattended.|Admin Password
-(`AdminPassword`)|`**__Requires input__**`|Robot's Windows Administrator password to login as.|URL of an existing and licensed Orchestrator.
-(`OrchestratorURL`)|`**__Requires input__**`|URL of an existing and licensed Orchestrator.|Tenant name where the Robot will be created.
-(`OrchestratorTenant`)|`default`|Tenant name where the Robot will be created.|Orchestrator API username with role to create/add Robot.
-(`OrchestratorAPIUser`)|`**__Requires input__**`|Orchestrator API username with role to create/add Robot.|Orchestrator API password
-(`OrchestratorAPIPassword`)|`**__Requires input__**`|Orchestrator API password.
+|Parameter label (name) |Default value|Description|UiPath Robot version
+(`RobotVersion`)|`20.10.2`|UIPath Robot version to install.|UiPath Robot type (attended/unattended)
+(`RobotType`)|`Attended`|Choose the type of UiPath Robot you want to install (attended or unattended).|Administrator password
+(`AdminPassword`)|`**__Requires input__**`|Windows administrator password for UiPath Robot.|UiPath Orchestrator URL
+(`OrchestratorURL`)|`**__Requires input__**`|UiPath Orchestrator URL.|UiPath Robot tenant name
+(`OrchestratorTenant`)|`default`|Tenant name where the UiPath Robot is created.|UiPath Orchestrator API username
+(`OrchestratorAPIUser`)|`**__Requires input__**`|UiPath Orchestrator API username. This must have a role with permissions to add and create robots.|UiPath Orchestrator API password
+(`OrchestratorAPIPassword`)|`**__Requires input__**`|UiPath Orchestrator API password.
 |===
-.Quickstart Bucket configuration
+.Quick Start S3 bucket configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
-|Parameter label (name) |Default value|Description|Template hosting Bucket
-(`QSS3BucketName`)|`aws-quickstart`|S3 bucket name hosting the Quickstart templates.|Template folder
-(`QSS3KeyPrefix`)|`quickstart-uipath-robot/`|S3 key prefix under which Quick Start templates are hosted.
+|Parameter label (name) |Default value|Description|Template-hosting S3 bucket
+(`QSS3BucketName`)|`aws-quickstart`|Name of the S3 bucket for your copy of the Quick Start assets. Keep the default name unless you are customizing the template. Changing the name updates code references to point to a new Quick Start location. This name can include numbers, lowercase letters, uppercase letters, and hyphens, but do not start or end with a hyphen (-). See https://aws-quickstart.github.io/option1.html.|Template folder
+(`QSS3KeyPrefix`)|`quickstart-uipath-robot/`|S3 key prefix that is used to simulate a directory for your copy of the  Quick Start assets. Keep the default prefix unless you are customizing  the template. Changing this prefix updates code references to point to  a new Quick Start location. This prefix can include numbers, lowercase  letters, uppercase letters, hyphens (-), and forward slashes (/).  See https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html  and https://aws-quickstart.github.io/option1.html.
 |===

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.12">
-<title>UIPath Robot on the AWS Cloud</title>
+<title>UiPath Robot on the AWS Cloud</title>
 <style>
 
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -790,8 +790,8 @@ p.footer-text a{color:#d7d8d8}
 <div id="toctitle"></div>
 <ul class="sectlevel1">
 <li><a href="#_overview">Overview</a></li>
-<li><a href="#_uipath_robot_on_aws">UIPath Robot on AWS</a></li>
-<li><a href="#_cost">Cost</a></li>
+<li><a href="#_uipath_robot_on_aws">UiPath Robot on AWS</a></li>
+<li><a href="#_aws_costs">AWS costs</a></li>
 <li><a href="#_software_licenses">Software licenses</a></li>
 <li><a href="#_architecture">Architecture</a></li>
 <li><a href="#_planning_the_deployment">Planning the deployment</a>
@@ -804,24 +804,29 @@ p.footer-text a{color:#d7d8d8}
 <li><a href="#_deployment_steps">Deployment steps</a>
 <ul class="sectlevel2">
 <li><a href="#_sign_in_to_your_aws_account">Sign in to your AWS account</a></li>
-<li><a href="#_launch_the_quick_start">Launch the Quick Start</a></li>
+<li><a href="#_deploy_the_quick_start">Deploy the Quick Start</a></li>
 </ul>
 </li>
 <li><a href="#_test_the_deployment">Test the deployment</a></li>
-<li><a href="#_best_practices_for_using_uipath_robot_on_aws">Best practices for using UIPath Robot on AWS</a>
+<li><a href="#_create_a_key_pair">Create a key pair</a></li>
+<li><a href="#_create_iam_user">Create IAM user</a></li>
+<li><a href="#_best_practices_for_using_uipath_robot_on_aws">Best practices for using UiPath Robot on AWS</a>
 <ul class="sectlevel2">
-<li><a href="#_high_availability_and_disaster_recovery">High Availability and Disaster Recovery</a></li>
+<li><a href="#_high_availability_and_disaster_recovery">High availability and disaster recovery</a></li>
 </ul>
 </li>
-<li><a href="#_security">Security</a></li>
-<li><a href="#_other_useful_information">Other useful information</a></li>
-<li><a href="#_create_a_key_pair">Create a key pair</a></li>
-<li><a href="#_create_an_iam_user">Create an IAM User</a></li>
+<li><a href="#_security">Security</a>
+<ul class="sectlevel2">
+<li><a href="#_security_groups_and_firewalls">Security groups and firewalls</a></li>
+<li><a href="#_security_of_the_aws_infrastructure">Security of the AWS infrastructure</a></li>
+</ul>
+</li>
+<li><a href="#_resources">Resources</a></li>
 <li><a href="#_faq">FAQ</a></li>
 <li><a href="#_parameter_reference">Parameter reference</a>
 <ul class="sectlevel2">
-<li><a href="#_launch_into_a_new_vpc">Launch into a new VPC</a></li>
 <li><a href="#_launch_into_an_existing_vpc">Launch into an existing VPC</a></li>
+<li><a href="#_launch_into_a_new_vpc">Launch into a new VPC</a></li>
 </ul>
 </li>
 <li><a href="#_send_us_feedback">Send us feedback</a></li>
@@ -834,7 +839,7 @@ p.footer-text a{color:#d7d8d8}
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<h2 id="_uipath_robot_on_the_aws_cloud" class="discrete text-center">UIPath Robot on the AWS Cloud</h2>
+<h2 id="_uipath_robot_on_the_aws_cloud" class="discrete text-center">UiPath Robot on the AWS Cloud</h2>
 <h2 id="_quick_start_reference_deployment" class="discrete text-left text-center">Quick Start Reference Deployment</h2>
 <div class="imageblock text-center">
 <div class="content">
@@ -842,9 +847,9 @@ p.footer-text a{color:#d7d8d8}
 </div>
 </div>
 <div class="paragraph text-center">
-<p><strong>December 2020</strong><br>
-<em>Adrian Tudoran, Razvan-Valetin Grigoras, and Binoy Das UIPath</em><br>
-<em>Shivansh Singh, Tony Bulding, AWS Quick Start team</em></p>
+<p><strong>March 2021</strong><br>
+<em>Adrian Tudoran, Razvan-Valetin Grigoras, and Binoy Das, UiPath</em><br>
+<em>Shivansh Singh and Tony Bulding, AWS Quick Start team</em></p>
 </div>
 <div class="admonitionblock tip text-left">
 <table>
@@ -860,7 +865,7 @@ report bugs, or submit feature ideas for this Quick Start.
 </table>
 </div>
 <div class="paragraph text-left">
-<p>This Quick Start was created by UIPath in collaboration with Amazon Web Services (AWS). <a href="http://aws.amazon.com/quickstart/" target="_blank" rel="noopener">Quick Starts</a> are automated reference deployments that use AWS CloudFormation templates to deploy key technologies on AWS, following AWS best practices.</p>
+<p>This Quick Start was created by UiPath in collaboration with Amazon Web Services (AWS). <a href="http://aws.amazon.com/quickstart/" target="_blank" rel="noopener">Quick Starts</a> are automated reference deployments that use AWS CloudFormation templates to deploy key technologies on AWS, following AWS best practices.</p>
 </div>
 </div>
 </div>
@@ -868,10 +873,19 @@ report bugs, or submit feature ideas for this Quick Start.
 <h2 id="_overview">Overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This guide provides instructions for deploying the UIPath Robot Quick Start reference architecture on the AWS Cloud.</p>
+<p>This Quick Start reference deployment guide provides step-by-step instructions for deploying UiPath Robot on AWS. This Quick Start deploys UiPath Robot, the agent that runs processes designed in UiPath Studio. UiPath software robots must be connected to UiPath Orchestrator in order to execute processes, or they have to be licensed locally. The type of robot you have at your disposal is determined by its license, while the robot service is determined by the deployment. For more information, see <a href="https://docs.uipath.com/robot/docs/about-licensing">About Licensing</a>.</p>
 </div>
-<div class="paragraph">
-<p>This Quick Start is for users who wants the convenience of deploying UiPath Robot application on AWS cloud. It deploys UiPath Robot which enables you to run processes developed in Studio. Robots need to be connected to Orchestrator in order to execute processes or they have to be licensed locally (read more about licensing). The type of Robot you have at your disposal is determined by the license, while the Robot service is determined by the deployment.</p>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+This Quick Start deploys UiPath Robot. UiPath software robots can be deployed, secured, and managed at scale using UiPath Orchestrator, the centralized robot management tool from UiPath. A Quick Start reference deployment for <a href="https://fwd.aws/DqQDx">UiPath Orchestrator on the AWS Cloud</a> is also available.
+</td>
+</tr>
+</table>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -888,71 +902,18 @@ Amazon may share user-deployment information with the AWS Partner that collabora
 </div>
 </div>
 <div class="sect1">
-<h2 id="_uipath_robot_on_aws">UIPath Robot on AWS</h2>
+<h2 id="_uipath_robot_on_aws">UiPath Robot on AWS</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>UiPath Robot is UiPath’s execution agent that enables you to run processes developed in Studio.
-The Robot is split into several components, each being dedicated to a particular task in your automation. The Robot components are as follows:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://docs.uipath.com/robot/docs/robot-service">Service</a></p>
-<div class="ulist">
-<ul>
-<li>
-<p>Service Mode</p>
-</li>
-<li>
-<p>User Mode</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><a href="https://docs.uipath.com/robot/docs/robot-executor">Executor</a></p>
-</li>
-<li>
-<p><a href="https://docs.uipath.com/robot/docs/robot-agent">Tray</a></p>
-</li>
-<li>
-<p><a href="https://docs.uipath.com/robot/docs/robot-command-line-interface">Command Line Interface</a></p>
-</li>
-<li>
-<p><a href="https://docs.uipath.com/robot/docs/uipath-assistant">UiPath Assistant</a></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Having the Robot components split as explained above helps developers, support users, and computers easily run, identify, and track what each component is executing. Special behaviors can be configured per component this way, such as setting up different Firewall rules for the Executor and the Service.</p>
-</div>
-<div class="paragraph">
-<p>This Quick Start reference deployment allow you to deploy the following types of Robots:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Attended - This type of Robot is triggered by user events, and operates alongside a human user, sharing the same workstation. Attended Robots are used with Orchestrator for centralized process deployment and logging. They can also add data into a queue, to be processed by Unattended robots.</p>
-</li>
-<li>
-<p>Unattended - Robots run unattended in virtual environments and can automate any number of processes. On top of the Attended Robot capabilities, the Orchestrator is responsible for remote execution, monitoring, scheduling and providing support for work queues.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>You are able to run debugging in UiPath Studio with all types of Robots.</p>
-</div>
-<div class="paragraph">
-<p>Please know that we may share who uses AWS Quick Starts with the AWS partner that collaborated with AWS on the content of the Quick Start.</p>
+<p>UiPath Robot is the agent that runs processes designed in UiPath Studio. A UiPath Robot is split into several components, each being dedicated to a particular automation task. This design allows you to run, identify, and track the work of each component. With UIPath Robots, you can capture data from user interfaces, manipulate applications, and communicate with other systems to perform repetitive business processes. Depending on its license, a UiPath software robot can be attended or unattended. For more information, see <a href="https://docs.uipath.com/robot/docs/introduction">Introduction</a> in the UiPath Robot Guide.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_cost">Cost</h2>
+<h2 id="_aws_costs">AWS costs</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You are responsible for the cost of the AWS services used while running
-this Quick Start. There is no additional cost for
+<p>You are responsible for the cost of the AWS services and any third-party licenses used while running this Quick Start. There is no additional cost for
 using the Quick Start.</p>
 </div>
 <div class="paragraph">
@@ -979,10 +940,10 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <h2 id="_software_licenses">Software licenses</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This Quick Start does not require to have an Orchestrator instance, it will only install UiPath Robot. However, the configuration of the Robot will need to be done manually once you decide to connect it to Orchestrator. The minimum version for Orchestrator is 20.4.x</p>
+<p>This Quick Start only installs UiPath Robot. It does not require a UiPath Orchestrator instance. If you decide to connect it to UiPath Orchestrator, you must configure UiPath Robot manually. This deployment supports UiPath Orchestrator version 20.4.x and later.</p>
 </div>
 <div class="paragraph">
-<p>The Quick Start uses only uses AWS provided Windows images and does not require any subscription to the Amazon Machine Image (AMI). For instructions, see step 2 in the deployment section.</p>
+<p>The Quick Start uses only AWS-provided Microsoft Windows images and does not require a subscription to the Amazon Machine Image (AMI).</p>
 </div>
 </div>
 </div>
@@ -991,14 +952,14 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <div class="sectionbody">
 <div class="paragraph">
 <p>Deploying this Quick Start for a new virtual private cloud (VPC) with
-default parameters builds the following UIPath Robot environment in the
+default parameters builds the following UiPath Robot environment in the
 AWS Cloud.</p>
 </div>
 <div id="architecture1" class="imageblock">
 <div class="content">
-<img src="images/architecture_diagram.png" alt="Architecture" width="100%" height="100%">
+<img src="images/uipath-robot-aws-architecture-diagram.png" alt="Architecture" width="100%" height="100%">
 </div>
-<div class="title">Figure 1. Quick Start architecture for UIPath Robot on AWS</div>
+<div class="title">Figure 1. Quick Start architecture for UiPath Robot on AWS</div>
 </div>
 <div class="paragraph">
 <p>As shown in <a href="#architecture1">Figure 1</a>, the Quick Start sets up the following:</p>
@@ -1006,7 +967,7 @@ AWS Cloud.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>A highly available architecture that spans two (or more) Availability Zones, per your choosing.</p>
+<p>A highly available architecture that spans two or more Availability Zones.</p>
 </li>
 <li>
 <p>A VPC configured with public and private subnets, according to AWS
@@ -1017,11 +978,13 @@ best practices, to provide you with your own virtual network on AWS.*</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Managed network address translation (NAT) gateways to allow outbound
-internet access for resources in the private subnets.*</p>
+<p>Managed NAT gateways to allow outbound internet access for resources in the private subnets.*</p>
 </li>
 <li>
-<p>A Windows bastion host to allow inbound RDP access to EC2 instances in private subnets.</p>
+<p>A Windows bastion host to allow inbound Remote Desktop Protocol (RDP) access to Amazon Elastic Compute Cloud (Amazon EC2) instances in private subnets.*</p>
+</li>
+<li>
+<p>A security group controlling inbound and outbound traffic to the bastion host instances.</p>
 </li>
 </ul>
 </div>
@@ -1031,12 +994,18 @@ internet access for resources in the private subnets.*</p>
 <div class="ulist">
 <ul>
 <li>
-<p>The EC2 machines hosting UiPath Robot</p>
+<p>Amazon EC2 instances to host UiPath Robot.</p>
+</li>
+<li>
+<p>A security group controlling inbound and outbound traffic to the UiRobot instances.</p>
 </li>
 </ul>
 </div>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p><span class="small">*The template that deploys the Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.</span></p>
 </div>
 </div>
 </div>
@@ -1046,25 +1015,32 @@ internet access for resources in the private subnets.*</p>
 <div class="sect2">
 <h3 id="_specialized_knowledge">Specialized knowledge</h3>
 <div class="paragraph">
-<p>This deployment requires a moderate level of familiarity with AWS services. If you’re new to AWS, visit <a href="https://aws.amazon.com/getting-started/" target="_blank" rel="noopener">Getting Started with AWS</a> and <a href="https://aws.amazon.com/training/" target="_blank" rel="noopener">Training and Certification</a>. These sites provide materials for learning how to design, deploy, and operate your infrastructure and applications on the AWS Cloud.</p>
+<p>This deployment requires a moderate level of familiarity with
+AWS services. If you’re new to AWS, see <a href="https://aws.amazon.com/getting-started/" target="_blank" rel="noopener">Getting Started Resource Center</a>
+and <a href="https://aws.amazon.com/training/" target="_blank" rel="noopener">AWS Training and Certification</a>. These sites provide materials for learning how to design,
+deploy, and operate your infrastructure and applications on the AWS Cloud.</p>
 </div>
 <div class="paragraph">
-<p>This deployment guide also requires a moderate level of familiarity with these AWS services.</p>
+<p>This deployment guide requires a moderate level of familiarity with the following AWS services:</p>
 </div>
-<div class="paragraph">
-<p><a href="https://aws.amazon.com/cloudformation/">AWS CloudFormation</a></p>
-</div>
-<div class="paragraph">
-<p><a href="https://aws.amazon.com/vpc/">Amazon VPC</a></p>
-</div>
-<div class="paragraph">
-<p><a href="https://aws.amazon.com/ec2/">Amazon EC2</a></p>
-</div>
-<div class="paragraph">
-<p><a href="https://aws.amazon.com/iam/">AWS IAM</a></p>
-</div>
-<div class="paragraph">
-<p><a href="https://aws.amazon.com/lambda/">AWS Lambda</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://aws.amazon.com/cloudformation/" target="_blank" rel="noopener">AWS CloudFormation</a></p>
+</li>
+<li>
+<p><a href="https://aws.amazon.com/vpc/" target="_blank" rel="noopener">Amazon Virtual Private Cloud</a></p>
+</li>
+<li>
+<p><a href="https://aws.amazon.com/ec2/" target="_blank" rel="noopener">Amazon EC2</a></p>
+</li>
+<li>
+<p><a href="https://aws.amazon.com/iam/" target="_blank" rel="noopener">AWS Identity and Access Management (IAM)</a></p>
+</li>
+<li>
+<p><a href="https://aws.amazon.com/lambda/" target="_blank" rel="noopener">AWS Lambda</a></p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
@@ -1079,7 +1055,7 @@ internet access for resources in the private subnets.*</p>
 <div class="sect2">
 <h3 id="_technical_requirements">Technical requirements</h3>
 <div class="paragraph">
-<p>Before you launch the Quick Start, your account must be configured as specified in the following table. Otherwise, deployment might fail.</p>
+<p>Before you launch the Quick Start, review the following information and ensure that your account is properly configured. Otherwise, deployment might fail.</p>
 </div>
 <div class="sect3">
 <h4 id="_resource_quotas">Resource quotas</h4>
@@ -1107,15 +1083,15 @@ internet access for resources in the private subnets.*</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Up to 9</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">NAT Gateways</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NAT gateways</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Up to 3</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">VPC Endpoints</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VPC endpoints</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Internet Gateways</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internet gateways</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 <tr>
@@ -1131,7 +1107,7 @@ internet access for resources in the private subnets.*</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Bastion Hosts</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bastion hosts</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 </tbody>
@@ -1140,7 +1116,7 @@ internet access for resources in the private subnets.*</p>
 <div class="sect3">
 <h4 id="_supported_regions">Supported Regions</h4>
 <div class="paragraph">
-<p>The CloudFormation stack can be launched in the following regions, based on availability of EC2 AMIs:</p>
+<p>Based on the availability of the Amazon EC2 AMI, the AWS CloudFormation stack can be launched in the following Regions:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1210,7 +1186,7 @@ internet access for resources in the private subnets.*</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>For a current list of supported Regions, see Service Endpoints and Quotas in the AWS documentation.</p>
+<p>For a list of supported Regions, see <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html" target="_blank" rel="noopener">AWS service endpoints</a>.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -1219,7 +1195,7 @@ internet access for resources in the private subnets.*</p>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Certain Regions are available on an opt-in basis. See <a href="https://docs.aws.amazon.com/general/latest/gr/rande-manage.html" target="_blank" rel="noopener">Managing AWS Regions</a>.
+Certain Regions are available on an opt-in basis. For more information, see <a href="https://docs.aws.amazon.com/general/latest/gr/rande-manage.html" target="_blank" rel="noopener">Managing AWS Regions</a>.
 </td>
 </tr>
 </table>
@@ -1243,22 +1219,27 @@ Certain Regions are available on an opt-in basis. See <a href="https://docs.aws.
 <div class="sect3">
 <h4 id="_prepare_your_aws_account">Prepare your AWS account</h4>
 <div class="sect4">
-<h5 id="_key_pair">Key Pair</h5>
+<h5 id="_key_pair">Key pair</h5>
 <div class="paragraph">
-<p>Make sure that at least one Amazon EC2 key pair exists in your AWS account in the Region where you plan to deploy the Quick Start. Make note of the key pair name. You need it during deployment. To create a key pair, follow the instructions in the <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html">AWS documentation</a>.<br>
-For testing or proof-of-concept purposes, we recommend creating a new key pair instead of using one that’s already being used by a production instance.</p>
+<p>Make sure that at least one Amazon EC2 key pair exists in your AWS account in your Region. Note the key-pair name because you will need it during deployment. For more information, see <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html" target="_blank" rel="noopener">Amazon EC2 key pairs and Linux instances</a>.</p>
+</div>
+<div class="paragraph">
+<p>For testing or proof-of-concept purposes, we recommend creating a new key pair instead of using one that’s already in use by a production instance. For more information, see <a href="#_create_a_key_pair">Create a key pair</a>, later in this guide.</p>
 </div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_deployment_options">Deployment options</h4>
 <div class="paragraph">
-<p>This Quick Start only provides end-to-end deployment option, meaning it builds a new VPC, set of Subnets, NAT Gateways, Internet Gateway, Security groups, Bastion host and other components for you. In order to setup the complete networking and routing infrastructure you need to provide only the CIDR block for the VPC that you wish to create.</p>
+<p>This Quick Start provides a two deployment options:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>It however lets you configure instance types and software settings such as user names and passwords, as discussed later in this guide.</p>
+<p><strong>Deploy UiPath Robot into a new VPC</strong>. This option option builds a new AWS environment consisting of the VPC, subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components. It then deploys UiPath Robot into this new VPC. To set up the networking and routing infrastructure, you only provide the CIDR block for the VPC that you want to create. However, you can configure instance types and software settings such as license keys, user names, and passwords, as discussed later in this guide.</p>
+</li>
+<li>
+<p><strong>Deploy UiPath Robot into an existing VPC</strong>. Provisions resources into your existing AWS VPC.</p>
 </li>
 </ul>
 </div>
@@ -1274,7 +1255,7 @@ For testing or proof-of-concept purposes, we recommend creating a new key pair i
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Sign in to your AWS account at <a href="https://aws.amazon.com" class="bare">https://aws.amazon.com</a> with an IAM user role that has the necessary permissions. For details, see <a href="#_planning_the_deployment">Planning the deployment</a> earlier in this guide.</p>
+<p>Sign in to your AWS account at <a href="https://aws.amazon.com" class="bare">https://aws.amazon.com</a> with an IAM user role that has the necessary permissions. For more information, see <a href="#_create_iam_user">Create IAM user</a>, later in this guide.</p>
 </li>
 <li>
 <p>Make sure that your AWS account is configured correctly, as discussed in the <a href="#_technical_requirements">Technical requirements</a> section.</p>
@@ -1283,7 +1264,7 @@ For testing or proof-of-concept purposes, we recommend creating a new key pair i
 </div>
 </div>
 <div class="sect2">
-<h3 id="_launch_the_quick_start">Launch the Quick Start</h3>
+<h3 id="_deploy_the_quick_start">Deploy the Quick Start</h3>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -1291,7 +1272,7 @@ For testing or proof-of-concept purposes, we recommend creating a new key pair i
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional cost for using this Quick Start. For full details, see the pricing pages for each AWS service used by this Quick Start. Prices are subject to change.
+You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional cost for using this Quick Start. For full details, see the pricing pages for each AWS service you use. Prices are subject to change.
 </td>
 </tr>
 </table>
@@ -1313,27 +1294,19 @@ You are responsible for the cost of the AWS services used while running this Qui
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="http://qs_launch_permalink" target="_blank" rel="noopener">Deploy UIPath Robot into a new VPC on AWS</a></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="http://qs_template_permalink" target="_blank" rel="noopener">View template</a></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/3rxkk" target="_blank" rel="noopener">Deploy UiPath Robot into a new VPC on AWS</a></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/RjvBJ" target="_blank" rel="noopener">View template</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/8PYNK" target="_blank" rel="noopener">Deploy UiPath Robot into an existing VPC on AWS</a></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/mpGPN" target="_blank" rel="noopener">View template</a></p></td>
 </tr>
 </tbody>
 </table>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-When you’re deploying UiPath make sure that you choose at least two Availability Zones within the Region you choose to deploy, and that the number of chosen Availability Zones matches the AZs you choose for deployment. QuickStart will create public and private subnets and <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html">NAT gateways</a> to allow the instances to download packages and software without exposing them to the internet.
-</td>
-</tr>
-</table>
-</div>
 <div class="olist arabic">
 <ol class="arabic" start="2">
 <li>
-<p>Check the AWS Region that’s displayed in the upper-right corner of the navigation bar, and change it if necessary. This Region is where the network infrastructure for UIPath Robot is built. The template is launched in the us-east-1 Region by default.</p>
+<p>Check the AWS Region displayed in the upper-right corner of the navigation bar, and change it if necessary. This Region is where the network infrastructure for UiPath Robot is built. The template launches in the us-east-1 Region by default.</p>
 </li>
 </ol>
 </div>
@@ -1343,7 +1316,7 @@ When you’re deploying UiPath make sure that you choose at least two Availabili
 <p>On the <strong>Create stack</strong> page, keep the default setting for the template URL, and then choose <strong>Next</strong>.</p>
 </li>
 <li>
-<p>On the <strong>Specify stack details</strong> page, change the stack name if needed. Review the parameters for the template. Provide values for the parameters that require input. For all other parameters, review the default settings and customize them as necessary. For details on each parameter, see the <a href="#_parameter_reference">Parameter reference</a> section of this guide. When you finish reviewing and customizing the parameters, choose <strong>Next</strong>.</p>
+<p>On the <strong>Specify stack details</strong> page, change the stack name if needed, and review the parameters for the template. Provide values for any parameters that require input. For all other parameters, review the default settings and customize them as necessary. For details on each parameter, see the <a href="#_parameter_reference">Parameter reference</a> section of this guide. When you finish reviewing and customizing the parameters, choose <strong>Next</strong>.</p>
 </li>
 </ol>
 </div>
@@ -1359,7 +1332,7 @@ When you’re deploying UiPath make sure that you choose at least two Availabili
 <p>Choose <strong>Create stack</strong> to deploy the stack.</p>
 </li>
 <li>
-<p>Monitor the status of the stack. When the status is <strong>CREATE_COMPLETE</strong>, the UIPath Robot deployment is ready.</p>
+<p>Monitor the status of the stack. When the status is <strong>CREATE_COMPLETE</strong>, the UiPath Robot deployment is ready.</p>
 </li>
 <li>
 <p>Use the values displayed in the <strong>Outputs</strong> tab for the stack, as shown in <a href="#cfn_outputs">Figure 2</a>, to view the created resources.</p>
@@ -1370,7 +1343,7 @@ When you’re deploying UiPath make sure that you choose at least two Availabili
 <div class="content">
 <a class="image" href="images/cfn_outputs.png"><img src="images/cfn_outputs.png" alt="cfn_outputs" width="100%" height="100%"></a>
 </div>
-<div class="title">Figure 2. UIPath Robot outputs after successful deployment</div>
+<div class="title">Figure 2. UiPath Robot outputs after successful deployment</div>
 </div>
 </div>
 </div>
@@ -1379,8 +1352,7 @@ When you’re deploying UiPath make sure that you choose at least two Availabili
 <h2 id="_test_the_deployment">Test the deployment</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>If you have provided an Orchestrator URL then login to Orchestrator and check if the Robot is present in the tenant provided and connected.
-:xrefstyle: short</p>
+<p>If you provided a UiPath Orchestrator URL during deployment, log in to UiPath Orchestrator. Then, verify that the UiPath Robot is present and connected to the tenant.</p>
 </div>
 <div id="test1" class="imageblock">
 <div class="content">
@@ -1388,55 +1360,21 @@ When you’re deploying UiPath make sure that you choose at least two Availabili
 </div>
 <div class="title">Figure 3. Test the deployment</div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
 <div class="paragraph">
-<p>The deployment will create a new MODERN folder called AWSDeployed. In it you will find the newly created UiPath Robot.</p>
-</div>
-<div class="paragraph">
-<p>Depending on the type of the Robot you selected you will encounter the following situations:</p>
+<p>The deployment creates a <strong>MODERN</strong> directory called <strong>AWSDeployed</strong>, which contains UiPath Robot.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>For Unattended robot, be aware that the STATUS will be N/A but you will be able to run jobs on the machine. This happens because the new local admin account created by the deployment is not logged into the machine.</p>
+<p>For an unattended UiPath software robot, the <strong>STATUS</strong> is <strong>N/A</strong> because the new local administrator account is not yet logged in. However, you can run jobs.</p>
 </li>
 <li>
-<p>For Attended Robot the STATUS will be DISCONNECTED because the built-in Administrator account is not logged into the machine.</p>
+<p>For an attended UiPath software robot, the <strong>STATUS</strong> is <strong>DISCONNECTED</strong> because the built-in administrator account is not logged in.</p>
 </li>
 </ul>
 </div>
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
-<p>Check if the Robot was deployed successfully by accessing the Robot VM from the Bastion Host.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>For Attended Robot connect with the Administrator account. You will retrieve the password for the AWS portal by using your private key mentioned in the deployment.</p>
-</div>
-<div class="paragraph">
-<p>For Unattended Robot, you will retrieve the user account from the Robots page in Orchestrator. The user format is: domain/username OR machinename/username. The password is the one you provided in the deployment at the UiPath Robot Configuration step.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>The result should like like <a href="#test2">Figure 4</a></p>
+<p>Access the UiPath Robot VM from the bastion host to check that it is deployed successfully. Connect to an attended UiPath software robot through the administrator account. To retrieve the password, use your private key. For an unattended robot, retrieve the user account from the <strong>Robots</strong> page in UiPath Orchestrator. The user format is <code>domain/username</code> or <code>machinename/username</code>. Use the same password you used during deployment.</p>
 </div>
 <div id="test2" class="imageblock">
 <div class="content">
@@ -1447,24 +1385,176 @@ When you’re deploying UiPath make sure that you choose at least two Availabili
 </div>
 </div>
 <div class="sect1">
-<h2 id="_best_practices_for_using_uipath_robot_on_aws">Best practices for using UIPath Robot on AWS</h2>
+<h2 id="_create_a_key_pair">Create a key pair</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Amazon EC2 uses public-key cryptography to encrypt and decrypt login information. In Windows instances, the key pair obtains the administrator password from the Amazon EC2 console and then logs in using RDP. On Linux, the key pair authenticates the SSH (Secure Shell) login. For more information, see <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html" target="_blank" rel="noopener">Amazon EC2 key pairs and Linux instances</a>.</p>
+</div>
+<div class="paragraph">
+<p>To create a key pair in your preferred Region, do the following:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic" start="1">
+<li>
+<p>In your AWS Management Console, choose an AWS Region.</p>
+</li>
+<li>
+<p>On the <strong>Services</strong> menu, choose <strong>EC2</strong>.</p>
+</li>
+<li>
+<p>Under <strong>Network and Security</strong>, choose <strong>Key Pairs</strong>.</p>
+</li>
+<li>
+<p>Choose <strong>Create Key Pair</strong>.</p>
+</li>
+<li>
+<p>Enter a name and choose <strong>Create</strong>.</p>
+</li>
+</ol>
+</div>
+<div id="ds1" class="imageblock">
+<div class="content">
+<img src="images/ds1.png" alt="ds1" width="100%" height="100%">
+</div>
+<div class="title">Figure 5. Create a key pair</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_iam_user">Create IAM user</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A user login with programmatic access to following AWS services is required to launch the Quick Start CloudFormation stack.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>AWS CloudFormation</p>
+</li>
+<li>
+<p>AWS IAM, Amazon EC2</p>
+</li>
+<li>
+<p>Amazon S3</p>
+</li>
+<li>
+<p>AWS Lambda</p>
+</li>
+<li>
+<p>AWS Storage Gateway.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you do already have an IAM user with full access to these services, or have administrator access, you can skip this section.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic" start="1">
+<li>
+<p>If you do not already have such an IAM user, <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console" target="_blank" rel="noopener">create one</a> from AWS console. In <a href="#cfnuser">Figure 6</a>, a user is created with programmatic and console access.</p>
+</li>
+</ol>
+</div>
+<div id="cfnuser" class="imageblock">
+<div class="content">
+<img src="images/cfnuser.png" alt="IAM" width="100%" height="100%">
+</div>
+<div class="title">Figure 6. Adding an IAM user</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic" start="2">
+<li>
+<p>To follow AWS best practices, allow access to required services. When setting permissions for the user, choose <strong>Attach existing policies directly</strong>. Then choose roles with full access for each of the services listed previously.</p>
+</li>
+</ol>
+</div>
+<div id="iam_2" class="imageblock">
+<div class="content">
+<img src="images/iam_2.png" alt="IAM" width="100%" height="100%">
+</div>
+<div class="title">Figure 7. Setting permissions</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+As shown in <a href="#iam_2">Figure 7</a>, you can filter the list using the search box.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic" start="3">
+<li>
+<p>Choose <strong>Next: Tags</strong> and optionally add a Name tag to identify the user.</p>
+<div id="iam_3" class="imageblock">
+<div class="content">
+<img src="images/iam_3.png" alt="IAM" width="100%" height="100%">
+</div>
+<div class="title">Figure 8. Adding optional tags</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="olist arabic">
+<ol class="arabic" start="4">
+<li>
+<p>Choose <strong>Next: Review</strong> and verify that the user is configured with full access to the services listed previously.</p>
+<div id="iam_4" class="imageblock">
+<div class="content">
+<img src="images/iam_4.png" alt="IAM" width="100%" height="100%">
+</div>
+<div class="title">Figure 9. Reviewing user details</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="olist arabic">
+<ol class="arabic" start="5">
+<li>
+<p>Choose <strong>Create User</strong>.</p>
+</li>
+<li>
+<p>Choose <strong>Download .csv</strong> to download and store the user&#8217;s security credentials in CSV format for future reference.</p>
+</li>
+</ol>
+</div>
+<div id="iam_5" class="imageblock">
+<div class="content">
+<img src="images/iam_5.png" alt="IAM" width="100%" height="100%">
+</div>
+<div class="title">Figure 10. IAM user created</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_best_practices_for_using_uipath_robot_on_aws">Best practices for using UiPath Robot on AWS</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_high_availability_and_disaster_recovery">High Availability and Disaster Recovery</h3>
+<h3 id="_high_availability_and_disaster_recovery">High availability and disaster recovery</h3>
 <div class="paragraph">
-<p>Amazon EC2 provides the ability to place instances in multiple locations composed of AWS Regions and Availability Zones. Regions are dispersed and located in separate geographic areas. Availability Zones are distinct locations within a Region that are engineered to be isolated from failures in other Availability Zones and that provide inexpensive, low-latency network connectivity to other Availability Zones in the same Region.</p>
+<p>Amazon EC2 provides the ability to place instances in multiple locations composed of AWS Regions and Availability Zones. Regions are dispersed and located in separate geographic areas. Availability Zones are distinct locations within a Region isolated from failures in other Availability Zones. They provide inexpensive, low-latency network connectivity to other Availability Zones in the same Region.</p>
 </div>
 <div class="paragraph">
-<p>By launching your instances in separate Regions, you can design your application to be closer to specific customers or to meet legal or other requirements. By launching your instances in separate Availability Zones, you can protect your applications from the failure of a single location. Exchange provides infrastructure features that complement the high availability and disaster recovery scenarios supported in the AWS Cloud.</p>
+<p>To make sure that an application is closer to certain customers, or for legal or design requirements, you can launch instances in separate Regions. By launching your instances in separate Availability Zones, you can protect your applications from the failure of a single location. Microsoft Exchange provides infrastructure features that complement the high availability and disaster recovery (DR) scenarios supported in the AWS Cloud.</p>
 </div>
 <div class="paragraph">
-<p>The architecture built by this Quick Start supports AWS best practices for high availability and security.</p>
+<p>The Quick Start also provides the option to deploy into a minimum of two Availability Zones. This option mitigates the loss of quorum in the case of a failure of a single node. However, you can choose this option only in AWS Regions that include two or more Availability Zones. For a current list of Availability Zones, see <a href="https://aws.amazon.com/about-aws/global-infrastructure/" target="_blank" rel="noopener">AWS Global Infrastructure</a>.</p>
 </div>
 <div class="paragraph">
-<p>The Quick Start also provides an option to deploy into minimum two Availability Zones. This deployment option can mitigate the loss of quorum in the case of a failure of a single node. However, you can select this option only in AWS Regions that include two or more Availability Zones; for a current list, see <a href="https://aws.amazon.com/about-aws/global-infrastructure/">AWS Global Infrastructure</a>.</p>
-</div>
-<div class="paragraph">
-<p>We recommend that you consult the <a href="https://docs.uipath.com/">UiPath docs</a> and customize some of the steps described in this guide or add ones to deploy a solution that best meets your business, IT, and security requirements.</p>
+<p>To customize UiPath software for your business, IT, and security requirements, consult the <a href="https://docs.uipath.com/" target="_blank" rel="noopener">UiPath Documentation Portal</a>.</p>
 </div>
 </div>
 </div>
@@ -1472,51 +1562,32 @@ When you’re deploying UiPath make sure that you choose at least two Availabili
 <div class="sect1">
 <h2 id="_security">Security</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_security_groups_and_firewalls">Security groups and firewalls</h3>
 <div class="paragraph">
-<p>When the EC2 instances are launched, they must be associated with a security group, which acts as a stateful firewall. You have complete control over the network traffic entering or leaving the security group, and you can build granular rules that are scoped by protocol, port number, and source or destination IP address or subnet. By default, all traffic egressing a security group is permitted. Ingress traffic, on the other hand, must be configured to allow the appropriate traffic to reach your instances.</p>
+<p>When Amazon EC2 instances are launched, they must be associated with a security group, which acts as a stateful firewall. You have complete control over the security group’s inbound and outbound network traffic. You can build granular rules that are scoped by protocol, port number, and source/destination IP address, or other security groups. By default, all outbound traffic from security group is permitted. Inbound traffic, however, must be configured to allow the appropriate traffic to reach your instances. We recommend that you tightly control inbound traffic. Doing this reduces the attack surface of your EC2 instances yet leaves the following ports open for application communication.</p>
 </div>
 <div class="paragraph">
-<p>We recommend that you tightly control ingress traffic, so that you reduce the attack surface of your EC2 instances but allowing following ports open for application communication:</p>
-</div>
-<div class="paragraph">
-<p>Robot</p>
+<p><strong>UiPath Robot TCP ports</strong></p>
 </div>
 <div id="security1" class="imageblock">
 <div class="content">
 <img src="images/security1.png" alt="security1" width="50%" height="50%">
 </div>
-<div class="title">Figure 5. Test the deployment</div>
+<div class="title">Figure 11. TCP ports</div>
 </div>
-<table class="tableblock frame-ends grid-rows stretch">
-<caption class="title">Robot Ports</caption>
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 80%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3389</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">RDP access</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">443</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">communication with Orchestrator</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>For UiPath Orchestrator security best practices, do refer to <a href="https://docs.uipath.com/orchestrator/docs/security-best-practices">UiPath docs</a></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_other_useful_information">Other useful information</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>AWS provides a set of building blocks (for example, Amazon EC2 and Amazon VPC) that you can use to provision infrastructure for your applications. In this model, some security capabilities, such as physical security, are the responsibility of AWS and are highlighted in the AWS security whitepaper. Other areas, such as controlling access to applications, fall on the application developer and the tools provided in the Microsoft or Linux (RHEL) ecosystem.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>3389 for RDP access</p>
+</li>
+<li>
+<p>443 for communication with UiPath Orchestrator</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>This Quick Start configures the following security groups for UiPath Stack (Robot or Orchestrator):</p>
+<p>This Quick Start configures the following security groups:</p>
 </div>
 <table class="tableblock frame-ends grid-rows stretch">
 <colgroup>
@@ -1543,108 +1614,45 @@ Outbound: any ports</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_create_a_key_pair">Create a key pair</h2>
-<div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Create a <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html">key pair</a> in your preferred region. To do this, in the navigation pane of the Amazon EC2 console, choose <strong>Key Pairs, Create Key Pair</strong>, type a name, and then choose <strong>Create.</strong></p>
-</li>
-</ol>
-</div>
 <div class="paragraph">
-<p>Amazon EC2 uses public-key cryptography to encrypt and decrypt login information. To be able to log into your instances, you must create a key pair. With Windows instances, we use the key pair to obtain the administrator password via the Amazon EC2 console and then log in using Remote Desktop Protocol (RDP) as explained in the <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair">step-by-step instructions</a> in the <em>Amazon Elastic Compute Cloud User Guide.</em> On Linux, we use the key pair to authenticate SSH login.</p>
+<p>For more information, see <a href="https://docs.uipath.com/orchestrator/docs/security-best-practices" target="_blank" rel="noopener">Security Best Practices</a>.</p>
 </div>
-<div id="ds1" class="imageblock">
-<div class="content">
-<img src="images/ds1.png" alt="ds1" width="100%" height="100%">
 </div>
-<div class="title">Figure 6. Create a Key Pair</div>
+<div class="sect2">
+<h3 id="_security_of_the_aws_infrastructure">Security of the AWS infrastructure</h3>
+<div class="paragraph">
+<p>AWS provides a set of building blocks, such as Amazon EC2 and Amazon VPC, that you can use to provision your application’s infrastructure. AWS operates under a shared security responsibility model. AWS is responsible for the security of the underlying cloud infrastructure and you are responsible for securing workloads you deploy in AWS. For more information, see <a href="https://docs.aws.amazon.com/whitepapers/latest/introduction-aws-security/introduction-aws-security.pdf" target="_blank" rel="noopener">Introduction to AWS Security</a>.</p>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_create_an_iam_user">Create an IAM User</h2>
+<h2 id="_resources">Resources</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>To launch the Cloudformation stack for this quickstart, you’ll need to use a user login that has programmatic access to following AWS services:</p>
-</div>
-<div class="olist lowerroman">
-<ol class="lowerroman" type="i">
+<div class="ulist">
+<ul>
 <li>
-<p>AWS CloudFormation</p>
+<p><a href="https://aws.amazon.com/cloudformation/" target="_blank" rel="noopener">AWS CloudFormation</a></p>
 </li>
 <li>
-<p>AWS IAM, Amazon EC2</p>
+<p><a href="https://aws.amazon.com/vpc/" target="_blank" rel="noopener">Amazon VPC</a></p>
 </li>
 <li>
-<p>Amazon S3</p>
+<p><a href="https://aws.amazon.com/ec2/" target="_blank" rel="noopener">Amazon EC2</a></p>
 </li>
 <li>
-<p>AWS Lambda</p>
+<p><a href="https://aws.amazon.com/iam/" target="_blank" rel="noopener">AWS IAM</a></p>
 </li>
 <li>
-<p>AWS Storage Gateway.</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>If you do already have an IAM user that has full access to the above services, or have Admin access, you can skip this step.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>If you do not already have such an IAM user, create an IAM user from AWS console. In the example below, a user “cfnuser” is being created allowing programmatic access and console access.</p>
-<div id="ds2" class="imageblock">
-<div class="content">
-<img src="images/ds2.png" alt="ds2" width="100%" height="100%">
-</div>
-<div class="title">Figure 7. Create an IAM User</div>
-</div>
+<p><a href="https://aws.amazon.com/s3/" target="_blank" rel="noopener">Amazon S3</a></p>
 </li>
 <li>
-<p>In order to follow AWS best practices, allow access to the required services. In order to do so, you can choose to attach existing policies. Then type first few letters of each service name and select to choose the FullAccess roles from the filtered list. The example here shows the screen for adding AmazonEC2FullAccess.</p>
-<div id="ds3" class="imageblock">
-<div class="content">
-<img src="images/ds3.png" alt="ds3" width="100%" height="100%">
-</div>
-<div class="title">Figure 8. Create an IAM User</div>
-</div>
-<div class="paragraph">
-<p>Repeat this step for all 10 services listed above.</p>
-</div>
+<p><a href="https://aws.amazon.com/storagegateway/" target="_blank" rel="noopener">AWS Storage Gateway</a></p>
 </li>
 <li>
-<p>Click on Next: Tags, and optionally add a Name tag to identify the user.</p>
-<div id="ds4" class="imageblock">
-<div class="content">
-<img src="images/ds4.png" alt="ds4" width="100%" height="100%">
-</div>
-<div class="title">Figure 9. Create an IAM User</div>
-</div>
+<p><a href="https://aws.amazon.com/lambda/" target="_blank" rel="noopener">AWS Lambda</a></p>
 </li>
-<li>
-<p>Click on Next: Review and review to ensure that full access to all 10 listed services have been granted to the user.</p>
-<div id="ds5" class="imageblock">
-<div class="content">
-<img src="images/ds5.png" alt="ds5" width="100%" height="100%">
-</div>
-<div class="title">Figure 10. Create an IAM User</div>
-</div>
-</li>
-<li>
-<p>Click on Create User to have the user created, and finally download the credential as CSV and store it in a secure location for future referral, if needed.</p>
-<div id="ds6" class="imageblock">
-<div class="content">
-<img src="images/ds6.png" alt="ds6" width="100%" height="100%">
-</div>
-<div class="title">Figure 11. Create an IAM User</div>
-</div>
-</li>
-</ol>
+</ul>
 </div>
 </div>
 </div>
@@ -1655,7 +1663,7 @@ Outbound: any ports</p></td>
 <p><strong>Q.</strong> I encountered a <strong>CREATE_FAILED</strong> error when I launched the Quick Start.</p>
 </div>
 <div class="paragraph">
-<p><strong>A.</strong> If AWS CloudFormation fails to create the stack, relaunch the template with <strong>Rollback on failure</strong> set to <strong>Disabled</strong>. This setting is under <strong>Advanced</strong> in the AWS CloudFormation console on the <strong>Configure stack options</strong> page. With this setting, the stack’s state is retained, and the instance keeps running so that you can troubleshoot the issue. (For Windows, look at the log files in <code>%ProgramFiles%\Amazon\EC2ConfigService</code> and <code>C:\cfn\log</code>.)</p>
+<p><strong>A.</strong> If AWS CloudFormation fails to create the stack, relaunch the template with <strong>Rollback on failure</strong> set to <strong>Disabled</strong>. This setting is under <strong>Advanced</strong> in the AWS CloudFormation console on the <strong>Configure stack options</strong> page. With this setting, the stack’s state is retained, and you can troubleshoot the issue.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1664,7 +1672,7 @@ Outbound: any ports</p></td>
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-When you set <strong>Rollback on failure</strong> to <strong>Disabled</strong>, you continue to incur AWS charges for this stack. Delete the stack when you finish troubleshooting.
+When you set <strong>Rollback on failure</strong> to <strong>Disabled</strong>, you continue to incur AWS charges for this stack. Make sure that you delete stack after troubleshooting.
 </td>
 </tr>
 </table>
@@ -1697,217 +1705,9 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 </table>
 </div>
 <div class="sect2">
-<h3 id="_launch_into_a_new_vpc">Launch into a new VPC</h3>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. Availability Zone Configuration</caption>
-<colgroup>
-<col style="width: 16%;">
-<col style="width: 11%;">
-<col style="width: 73%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter label (name)</th>
-<th class="tableblock halign-left valign-top">Default value</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zone(s) selection
-(<code>AvailabilityZones</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">List of Availability Zones to use for the subnets in the VPC - maximum of 3 AZs are used for this deployment (logical order of your selections is preserved).</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of AZs to use
-(<code>NumberOfAZs</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Availability Zones to use in the VPC (upto 3), must match your selections in the list of Availability Zones parameter.</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 2. Network Configuration</caption>
-<colgroup>
-<col style="width: 16%;">
-<col style="width: 11%;">
-<col style="width: 73%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter label (name)</th>
-<th class="tableblock halign-left valign-top">Default value</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">VPC CIDR
-(<code>VPCCIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.0.0.0/16</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for the VPC, must be in the form x.x.0.0/16.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet 1 tag
-(<code>PublicSubnetTag1</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Network=Public1</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tag to add to public subnet 1 in format Key=Value (Optional)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet 2 tag
-(<code>PublicSubnetTag2</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Network=Public2</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tag to add to public subnet 2 in format Key=Value (Optional).</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet 3 tag
-(<code>PublicSubnetTag3</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Network=Public3</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tag to add to public subnet 3 in format Key=Value (Optional).</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 1 tag
-(<code>PrivateSubnetTag1</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Network=Private1</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tag to add to private subnet 1 in format Key=Value (Optional).</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 2 tag
-(<code>PrivateSubnetTag2</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Network=Private2</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tag to add to private subnet 2 in format Key=Value (Optional).</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 3 tag
-(<code>PrivateSubnetTag3</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Network=Private3</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tag to add to private subnet 3 in format Key=Value (Optional).</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 3. Robot VM Configuration</caption>
-<colgroup>
-<col style="width: 16%;">
-<col style="width: 11%;">
-<col style="width: 73%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter label (name)</th>
-<th class="tableblock halign-left valign-top">Default value</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Instance Key pair
-(<code>KeyPairName</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Existing Key Pair, which is to be used to Log in to VM instances.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Instance type
-(<code>InstanceType</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>t2.medium</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">EC2 instance type</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 4. UiPath Robot Configuration</caption>
-<colgroup>
-<col style="width: 16%;">
-<col style="width: 11%;">
-<col style="width: 73%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter label (name)</th>
-<th class="tableblock halign-left valign-top">Default value</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Robot version.
-(<code>RobotVersion</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>20.10.2</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">UIPath Robot Version to be installed.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Robot type (attended/unattended).
-(<code>RobotType</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Attended</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Choose what type of UiPath Robot you want to be installed. Options are: Attended or Unattended.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Admin Password
-(<code>AdminPassword</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Robot&#8217;s Windows Administrator password to login as.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">URL of an existing and licensed Orchestrator.
-(<code>OrchestratorURL</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">URL of an existing and licensed Orchestrator.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tenant name where the Robot will be created.
-(<code>OrchestratorTenant</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>default</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tenant name where the Robot will be created.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Orchestrator API username with role to create/add Robot.
-(<code>OrchestratorAPIUser</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Orchestrator API username with role to create/add Robot.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Orchestrator API password
-(<code>OrchestratorAPIPassword</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Orchestrator API password.</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 5. Quickstart Bucket configuration</caption>
-<colgroup>
-<col style="width: 16%;">
-<col style="width: 11%;">
-<col style="width: 73%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter label (name)</th>
-<th class="tableblock halign-left valign-top">Default value</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Template hosting Bucket
-(<code>QSS3BucketName</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-quickstart</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">S3 bucket name hosting the Quickstart templates.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Template folder
-(<code>QSS3KeyPrefix</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>quickstart-uipath-robot/</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">S3 key prefix under which Quick Start templates are hosted.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
 <h3 id="_launch_into_an_existing_vpc">Launch into an existing VPC</h3>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 6. Network Configuration</caption>
+<caption class="title">Table 1. Network configuration</caption>
 <colgroup>
 <col style="width: 16%;">
 <col style="width: 11%;">
@@ -1925,30 +1725,30 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 <td class="tableblock halign-left valign-top"><p class="tableblock">VPC CIDR
 (<code>VPCCIDR</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.0.0.0/16</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for the VPC, must be in the form x.x.0.0/16.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VPC CIDR block, in format x.x.0.0/16.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">VPC ID
 (<code>VPCID</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">VPC ID to create the Robot in.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ID of the VPC where the UiPath Robot is created.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet to create the robot
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet IDs
 (<code>PrivateSubnetID</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet to create the UiPath Robot</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet with UiPath Robot.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet to create the robot
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet IDs
 (<code>PublicSubnetID</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet to create the bation to access the UiPath Robot</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet with bastion host to access UiPath Robot.</p></td>
 </tr>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 7. Robot VM Configuration</caption>
+<caption class="title">Table 2. Robot VM configuration</caption>
 <colgroup>
 <col style="width: 16%;">
 <col style="width: 11%;">
@@ -1963,21 +1763,21 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Instance Key pair
+<td class="tableblock halign-left valign-top"><p class="tableblock">Instance key pair
 (<code>KeyPairName</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Existing Key Pair, which is to be used to Log in to VM instances.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key pair used to log in to virtual machine (VM) instances.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Instance type
 (<code>InstanceType</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>t2.medium</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">EC2 instance type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EC2 instance type.</p></td>
 </tr>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 8. UiPath Robot Configuration</caption>
+<caption class="title">Table 3. UiPath Robot configuration</caption>
 <colgroup>
 <col style="width: 16%;">
 <col style="width: 11%;">
@@ -1995,48 +1795,48 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 <td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Robot version.
 (<code>RobotVersion</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>20.10.2</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">UIPath Robot Version to be installed.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UIPath Robot version to install.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Robot type (attended/unattended).
+<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Robot type (attended or unattended)
 (<code>RobotType</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Attended</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Choose what type of UiPath Robot you want to be installed. Options are: Attended or Unattended.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Choose the type of UiPath Robot you want to install (attended or unattended).</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Admin Password
+<td class="tableblock halign-left valign-top"><p class="tableblock">Administrator password
 (<code>AdminPassword</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Robot&#8217;s Windows Administrator password to login as.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Windows administrator password for UiPath Robot.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">URL of an existing and licensed Orchestrator.
+<td class="tableblock halign-left valign-top"><p class="tableblock">URL of an existing and licensed Orchestrator
 (<code>OrchestratorURL</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">URL of an existing and licensed Orchestrator.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Orchestrator URL.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tenant name where the Robot will be created.
+<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Robot tenant name
 (<code>OrchestratorTenant</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>default</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tenant name where the Robot will be created.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tenant name where the UiPath Robot is created.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Orchestrator API username with role to create/add Robot.
+<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Orchestrator API username
 (<code>OrchestratorAPIUser</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Orchestrator API username with role to create/add Robot.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Orchestrator API username. This must have a role with permissions to add and create robots.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Orchestrator API password
+<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Orchestrator API password
 (<code>OrchestratorAPIPassword</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Orchestrator API password.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Orchestrator API password.</p></td>
 </tr>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 9. Quickstart Bucket configuration</caption>
+<caption class="title">Table 4. Quick Start S3 bucket configuration</caption>
 <colgroup>
 <col style="width: 16%;">
 <col style="width: 11%;">
@@ -2051,16 +1851,224 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Template hosting Bucket
+<td class="tableblock halign-left valign-top"><p class="tableblock">Template-hosting S3 bucket
 (<code>QSS3BucketName</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-quickstart</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">S3 bucket name hosting the Quickstart templates.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the S3 bucket for your copy of the Quick Start assets. Keep the default name unless you are customizing the template. Changing the name updates code references to point to a new Quick Start location. This name can include numbers, lowercase letters, uppercase letters, and hyphens, but do not start or end with a hyphen (-). See <a href="https://aws-quickstart.github.io/option1.html" class="bare">https://aws-quickstart.github.io/option1.html</a>.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Template folder
 (<code>QSS3KeyPrefix</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>quickstart-uipath-robot/</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">S3 key prefix under which Quick Start templates are hosted.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">S3 key prefix that is used to simulate a directory for your copy of the  Quick Start assets. Keep the default prefix unless you are customizing  the template. Changing this prefix updates code references to point to  a new Quick Start location. This prefix can include numbers, lowercase  letters, uppercase letters, hyphens (-), and forward slashes (/).  See <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html" class="bare">https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html</a>  and <a href="https://aws-quickstart.github.io/option1.html" class="bare">https://aws-quickstart.github.io/option1.html</a>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_launch_into_a_new_vpc">Launch into a new VPC</h3>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 5. Availability Zone configuration</caption>
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 11%;">
+<col style="width: 73%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter label (name)</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zones
+(<code>AvailabilityZones</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List of Availability Zones to use for the subnets in the VPC. A maximum of three Availability Zones are used for this deployment.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Availability Zones to use
+(<code>NumberOfAZs</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Availability Zones to use in the VPC. Must match the number of Availability Zones chosen in the <strong>Availability Zones</strong> parameter.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 6. Network configuration</caption>
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 11%;">
+<col style="width: 73%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter label (name)</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VPC CIDR
+(<code>VPCCIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.0.0.0/16</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VPC CIDR block, in format x.x.0.0/16.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet 1 tag
+(<code>PublicSubnetTag1</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Network=Public1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(Optional) Tag to add to public subnet 1, in format Key=Value.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet 2 tag
+(<code>PublicSubnetTag2</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Network=Public2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(Optional) Tag to add to public subnet 2, in format Key=Value.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet 3 tag
+(<code>PublicSubnetTag3</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Network=Public3</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(Optional) Tag to add to public subnet 3, in format Key=Value.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 1 tag
+(<code>PrivateSubnetTag1</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Network=Private1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(Optional) Tag to add to private subnet 1, in format Key=Value.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 2 tag
+(<code>PrivateSubnetTag2</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Network=Private2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(Optional) Tag to add to private subnet 2, in format Key=Value.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 3 tag
+(<code>PrivateSubnetTag3</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Network=Private3</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(Optional) Tag to add to private subnet 3, in format Key=Value.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 7. Robot VM configuration</caption>
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 11%;">
+<col style="width: 73%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter label (name)</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Instance key pair
+(<code>KeyPairName</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key pair used to log in to virtual machine (VM) instances.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Instance type
+(<code>InstanceType</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>t2.medium</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EC2 instance type.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 8. UiPath Robot configuration</caption>
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 11%;">
+<col style="width: 73%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter label (name)</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Robot version
+(<code>RobotVersion</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>20.10.2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UIPath Robot version to install.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Robot type (attended/unattended)
+(<code>RobotType</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Attended</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Choose the type of UiPath Robot you want to install (attended or unattended).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Administrator password
+(<code>AdminPassword</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Windows administrator password for UiPath Robot.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Orchestrator URL
+(<code>OrchestratorURL</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Orchestrator URL.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Robot tenant name
+(<code>OrchestratorTenant</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>default</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tenant name where the UiPath Robot is created.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Orchestrator API username
+(<code>OrchestratorAPIUser</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Orchestrator API username. This must have a role with permissions to add and create robots.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Orchestrator API password
+(<code>OrchestratorAPIPassword</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Orchestrator API password.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 9. Quick Start S3 bucket configuration</caption>
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 11%;">
+<col style="width: 73%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter label (name)</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Template-hosting S3 bucket
+(<code>QSS3BucketName</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-quickstart</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the S3 bucket for your copy of the Quick Start assets. Keep the default name unless you are customizing the template. Changing the name updates code references to point to a new Quick Start location. This name can include numbers, lowercase letters, uppercase letters, and hyphens, but do not start or end with a hyphen (-). See <a href="https://aws-quickstart.github.io/option1.html" class="bare">https://aws-quickstart.github.io/option1.html</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Template folder
+(<code>QSS3KeyPrefix</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>quickstart-uipath-robot/</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">S3 key prefix that is used to simulate a directory for your copy of the  Quick Start assets. Keep the default prefix unless you are customizing  the template. Changing this prefix updates code references to point to  a new Quick Start location. This prefix can include numbers, lowercase  letters, uppercase letters, hyphens (-), and forward slashes (/).  See <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html" class="bare">https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html</a>  and <a href="https://aws-quickstart.github.io/option1.html" class="bare">https://aws-quickstart.github.io/option1.html</a>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -2101,7 +2109,7 @@ and to share your customizations with others.</p>
 <p>This document is provided for informational purposes only. It represents AWS’s current product offerings and practices as of the date of issue of this document, which are subject to change without notice. Customers are responsible for making their own independent assessment of the information in this document and any use of AWS’s products or services, each of which is provided “as is” without warranty of any kind, whether expressed or implied. This document does not create any warranties, representations, contractual commitments, conditions, or assurances from AWS, its affiliates, suppliers, or licensors. The responsibilities and liabilities of AWS to its customers are controlled by AWS agreements, and this document is not part of, nor does it modify, any agreement between AWS and its customers.</p>
 </div>
 <div class="paragraph">
-<p>The software included with this paper is licensed under the Apache License, version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at <a href="http://aws.amazon.com/apache2.0/" class="bare">http://aws.amazon.com/apache2.0/</a> or in the accompanying "license" file. This code is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied. See the License for specific language governing permissions and limitations.</p>
+<p>The software included with this paper is licensed under the Apache License, version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at <a href="http://aws.amazon.com/apache2.0/" target="_blank" rel="noopener">http://aws.amazon.com/apache2.0/</a> or in the accompanying "license" file. This code is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied. See the License for specific language governing permissions and limitations.</p>
 </div>
 </div>
 </div>
@@ -2109,7 +2117,7 @@ and to share your customizations with others.</p>
 <p class="footer-text">
 <!-- We can use document attributes: -->
 <!-- Generated with Asciidoctor v2.0.12. -->
-<a href="https://aws.amazon.com/privacy/">Privacy</a> | <a href="https://aws.amazon.com/terms/">Site terms</a> | &copy; 2020, Amazon Web Services, Inc. or its affiliates and UIPath. All rights reserved.
+<a href="https://aws.amazon.com/privacy/">Privacy</a> | <a href="https://aws.amazon.com/terms/">Site terms</a> | &copy; 2021, Amazon Web Services, Inc. or its affiliates and UiPath. All rights reserved.
 </p>
 </body>
 </html>
