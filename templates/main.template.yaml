@@ -1,0 +1,331 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  This template creates a Multi-AZ, multi-subnet VPC infrastructure with UIPath
+  Orchestrator deployed in private Subnets, with an ALB behind a Route53 in
+  public subnets. (qs-1r2g41216)
+Metadata:
+  QuickStartDocumentation:
+    EntrypointName: Launch into a new VPC
+    Order: 1
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: Availability Zone configuration
+        Parameters:
+          - AvailabilityZones
+          - NumberOfAZs
+      - Label:
+          default: Network configuration
+        Parameters:
+          - VPCCIDR
+          - PublicSubnetTag1
+          - PublicSubnetTag2
+          - PublicSubnetTag3
+          - PrivateSubnetTag1
+          - PrivateSubnetTag2
+          - PrivateSubnetTag3
+      - Label:
+          default: Robot VM configuration
+        Parameters:
+          - KeyPairName
+          - InstanceType
+      - Label:
+          default: UiPath Robot configuration
+        Parameters:
+          - RobotVersion
+          - RobotType
+          - AdminPassword
+          - OrchestratorURL
+          - OrchestratorTenant
+          - OrchestratorAPIUser
+          - OrchestratorAPIPassword
+      - Label:
+          default: Quick Start S3 bucket configuration
+        Parameters:
+          - QSS3BucketName
+          - QSS3KeyPrefix
+    ParameterLabels:
+      AvailabilityZones:
+        default: Availability Zones
+      NumberOfAZs:
+        default: Number of Availability Zones to use
+      VPCCIDR:
+        default: VPC CIDR
+      PrivateSubnetTag1:
+        default: Private subnet 1 tag
+      PrivateSubnetTag2:
+        default: Private subnet 2 tag
+      PrivateSubnetTag3:
+        default: Private subnet 3 tag
+      PublicSubnetTag1:
+        default: Public subnet 1 tag
+      PublicSubnetTag2:
+        default: Public subnet 2 tag
+      PublicSubnetTag3:
+        default: Public subnet 3 tag
+      KeyPairName:
+        default: Instance key pair
+      InstanceType:
+        default: Instance type
+      RobotType:
+        default: UiPath Robot type (attended/unattended)
+      RobotVersion:
+        default: UiPath Robot version
+      OrchestratorURL:
+        default: UiPath Orchestrator URL
+      OrchestratorTenant:
+        default: UiPath Robot tenant name
+      OrchestratorAPIUser:
+        default: UiPath Orchestrator API username
+      OrchestratorAPIPassword:
+        default: UiPath Orchestrator API password
+      AdminPassword:
+        default: Administrator password
+      QSS3BucketName:
+        default: Template-hosting S3 bucket
+      QSS3KeyPrefix:
+        default: Template folder
+Parameters:
+  AvailabilityZones:
+    Description: >-
+      List of Availability Zones to use for the subnets in the VPC. A maximum of three Availability Zones are used for this deployment.
+    Type: 'List<AWS::EC2::AvailabilityZone::Name>'
+  NumberOfAZs:
+    AllowedValues:
+      - '2'
+      - '3'
+    Default: '2'
+    Description: >-
+      Number of Availability Zones to use in the VPC. Must match the number of Availability Zones chosen in the *Availability Zones* parameter.
+    Type: String
+  VPCCIDR:
+    AllowedPattern: '^([0-9]{1,3}\.){2}([0]{1}.)[0]{1}(\/[16]{2})$'
+    ConstraintDescription: CIDR block parameter must be in the format x.x.0.0/16.
+    Default: 10.0.0.0/16
+    Description: VPC CIDR block, in format x.x.0.0/16.
+    Type: String
+  PrivateSubnetTag1:
+    AllowedPattern: '^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"''\[\]\{\}]*)?$'
+    ConstraintDescription: >-
+      Tags must be in format "Key=Value". Key can only contain
+      [a-zA-Z0-9+\-._:/@]. Value can only contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
+    Default: Network=Private1
+    Description: (Optional) Tag to add to private subnet 1, in format Key=Value.
+    Type: String
+  PrivateSubnetTag2:
+    AllowedPattern: '^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"''\[\]\{\}]*)?$'
+    ConstraintDescription: >-
+      Tags must be in format "Key=Value". Key can only contain
+      [a-zA-Z0-9+\-._:/@]. Value can only contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
+    Default: Network=Private2
+    Description: (Optional) Tag to add to private subnet 2, in format Key=Value.
+    Type: String
+  PrivateSubnetTag3:
+    AllowedPattern: '^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"''\[\]\{\}]*)?$'
+    ConstraintDescription: >-
+      Tags must be in format "Key=Value". Key can only contain
+      [a-zA-Z0-9+\-._:/@]. Value can only contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
+    Default: Network=Private3
+    Description: (Optional) Tag to add to private subnet 3, in format Key=Value.
+    Type: String
+  PublicSubnetTag1:
+    AllowedPattern: '^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"''\[\]\{\}]*)?$'
+    ConstraintDescription: >-
+      Tags must be in format "Key=Value". Key can only contain
+      [a-zA-Z0-9+\-._:/@]. Value can only contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
+    Default: Network=Public1
+    Description: (Optional) Tag to add to public subnet 1, in format Key=Value.
+    Type: String
+  PublicSubnetTag2:
+    AllowedPattern: '^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"''\[\]\{\}]*)?$'
+    ConstraintDescription: >-
+      Tags must be in format "Key=Value". Key can only contain
+      [a-zA-Z0-9+\-._:/@]. Value can only contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
+    Default: Network=Public2
+    Description: (Optional) Tag to add to public subnet 2, in format Key=Value.
+    Type: String
+  PublicSubnetTag3:
+    AllowedPattern: '^([a-zA-Z0-9+\-._:/@]+=[a-zA-Z0-9+\-.,_:/@ *\\"''\[\]\{\}]*)?$'
+    ConstraintDescription: >-
+      Tags must be in format "Key=Value". Key can only contain
+      [a-zA-Z0-9+\-._:/@]. Value can only contain [a-zA-Z0-9+\-._:/@ *\\"'\[\]\{\}]
+    Default: Network=Public3
+    Description: (Optional) Tag to add to public subnet 3, in format Key=Value.
+    Type: String
+  KeyPairName:
+    Description: Key pair used to log in to virtual machine (VM) instances.
+    Type: 'AWS::EC2::KeyPair::KeyName'
+  InstanceType:
+    AllowedValues:
+      - t2.micro
+      - t2.small
+      - t2.medium
+      - t2.large
+      - m4.large
+      - m4.xlarge
+      - m4.2xlarge
+      - m4.4xlarge
+      - m4.10xlarge
+      - c4.large
+      - c4.xlarge
+      - c4.2xlarge
+      - c4.4xlarge
+      - c4.8xlarge
+      - r4.large
+      - r4.xlarge
+      - r4.2xlarge
+      - r4.4xlarge
+      - r4.8xlarge
+    ConstraintDescription: Must be a valid Amazon EC2 instance type from the list.
+    Default: t2.medium
+    Description: EC2 instance type.
+    Type: String
+  AdminPassword:
+    Description: Windows administrator password for UiPath Robot.
+    Type: String
+    NoEcho: 'true'
+    MinLength: '6'
+    MaxLength: '124'
+    AllowedPattern: >-
+      (?=^.{6,124}$)((?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*
+    ConstraintDescription: >-
+      Windows administrator password must contain more than six characters, including at least one uppercase letter.
+  RobotType:
+    Type: String
+    Default: Attended
+    AllowedValues:
+      - Attended
+      - Unattended
+    Description: Choose the type of UiPath Robot you want to install (attended or unattended).
+  RobotVersion:
+    Description: UIPath Robot version to install.
+    Type: String
+    Default: 20.10.2
+    AllowedValues:
+      - 20.10.2
+    ConstraintDescription: Robot version can only contain characters *0–9* and *.* (period).
+  OrchestratorURL:
+    Type: String
+    Description: UiPath Orchestrator URL.
+  OrchestratorTenant:
+    Type: String
+    Default: default
+    Description: Tenant name where the UiPath Robot is created.
+  OrchestratorAPIUser:
+    Type: String
+    Description: UiPath Orchestrator API username. This must have a role with permissions to add and create robots.
+  OrchestratorAPIPassword:
+    Type: String
+    Description: UiPath Orchestrator API password.
+    NoEcho: 'true'
+  QSS3BucketName:
+    AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
+    ConstraintDescription: >-
+      Quick Start bucket name can include numbers, lowercase letters, uppercase
+      letters, and hyphens (-). It cannot start or end with a hyphen (-).
+    Description: Name of the S3 bucket for your copy of the Quick Start assets. 
+      Keep the default name unless you are customizing the template. 
+      Changing the name updates code references to point to a new Quick 
+      Start location. This name can include numbers, lowercase letters, 
+      uppercase letters, and hyphens, but do not start or end with a hyphen (-). 
+      See https://aws-quickstart.github.io/option1.html.
+    Type: String
+    Default: aws-quickstart
+  QSS3BucketRegion:
+    Default: us-east-1
+    Description: >-
+       AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. Keep the default Region unless you are customizing the template. Changing this Region updates code references to point to a new Quick Start location. When using your own bucket, specify the Region. See https://aws-quickstart.github.io/option1.html.
+    Type: String
+    AllowedPattern: (us(-gov)?|ap|ca|cn|eu|sa)-(central|(north|south)?(east|west)?)-\d
+    ConstraintDescription: Must be a valid AWS Region code.
+  QSS3KeyPrefix:
+    AllowedPattern: '^[0-9a-zA-Z-/]*/$'
+    ConstraintDescription: >-
+      The Quick Start S3 key prefix can include numbers, lowercase letters,
+      uppercase letters, hyphens (-), and forward slashes (/).
+    Default: quickstart-uipath-robot/
+    Description: >-
+      S3 key prefix that is used to simulate a directory for your copy of the 
+      Quick Start assets. Keep the default prefix unless you are customizing 
+      the template. Changing this prefix updates code references to point to 
+      a new Quick Start location. This prefix can include numbers, lowercase 
+      letters, uppercase letters, hyphens (-), and forward slashes (/). 
+      See https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html 
+      and https://aws-quickstart.github.io/option1.html.
+    Type: String
+Conditions:
+  UsingDefaultBucket: !Equals
+    - !Ref QSS3BucketName
+    - aws-quickstart
+Resources:
+  NetworkStack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: !Sub
+        - >-
+          https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-aws-vpc/templates/aws-vpc.template
+        - S3Bucket: !If
+            - UsingDefaultBucket
+            - !Sub '${QSS3BucketName}-${AWS::Region}'
+            - !Ref QSS3BucketName
+          S3Region: !If
+            - UsingDefaultBucket
+            - !Ref 'AWS::Region'
+            - !Ref QSS3BucketRegion
+      Parameters:
+        AvailabilityZones: !Join
+          - ','
+          - !Ref AvailabilityZones
+        NumberOfAZs: !Ref NumberOfAZs
+        VPCCIDR: !Ref VPCCIDR
+        PublicSubnetTag1: !Ref PublicSubnetTag1
+        PublicSubnetTag2: !Ref PublicSubnetTag2
+        PublicSubnetTag3: !Ref PublicSubnetTag3
+        PrivateSubnetATag1: !Ref PrivateSubnetTag1
+        PrivateSubnetBTag1: !Ref PrivateSubnetTag2
+        PrivateSubnetBTag2: !Ref PrivateSubnetTag3
+  UiPathRobotStack:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: !Sub
+        - >-
+          https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/uipath-robot.template.yaml
+        - S3Bucket: !If
+            - UsingDefaultBucket
+            - !Sub '${QSS3BucketName}-${AWS::Region}'
+            - !Ref QSS3BucketName
+          S3Region: !If
+            - UsingDefaultBucket
+            - !Ref 'AWS::Region'
+            - !Ref QSS3BucketRegion
+      Parameters:
+        VPCCIDR: !Ref VPCCIDR
+        VPCID: !GetAtt NetworkStack.Outputs.VPCID
+        PrivateSubnetID: !GetAtt NetworkStack.Outputs.PrivateSubnet1AID
+        PublicSubnetID: !GetAtt NetworkStack.Outputs.PublicSubnet1ID
+        KeyPairName: !Ref KeyPairName
+        AdminPassword: !Ref AdminPassword
+        RobotType: !Ref RobotType
+        RobotVersion: !Ref RobotVersion
+        QSS3BucketName: !Ref QSS3BucketName
+        QSS3BucketRegion: !Ref QSS3BucketRegion
+        QSS3KeyPrefix: !Ref QSS3KeyPrefix
+        OrchestratorURL: !Ref OrchestratorURL
+        OrchestratorTenant: !Ref OrchestratorTenant
+        OrchestratorAPIUser: !Ref OrchestratorAPIUser
+        OrchestratorAPIPassword: !Ref OrchestratorAPIPassword
+        InstanceType: !Ref InstanceType
+Outputs:
+  BastionHostPublicIP:
+    Description: Public IP of bastion host in public subnet 1.
+    Value: !GetAtt
+      - UiPathRobotStack
+      - Outputs.BastionHostPublicIP
+  UiPathRobotPrivateIP:
+    Description: Private IP of UiPath Robot in private subnet 1.
+    Value: !GetAtt
+      - UiPathRobotStack
+      - Outputs.UiPathRobotPrivateIP
+  Postdeployment:
+    Description: See the deployment guide for post-deployment steps.
+    Value: https://aws.amazon.com/quickstart/?quickstart-all.sort-by=item.additionalFields.sortDate&quickstart-all.sort-order=desc&awsm.page-quickstart-all=5
