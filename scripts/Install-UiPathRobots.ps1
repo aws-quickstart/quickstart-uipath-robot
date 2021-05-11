@@ -54,9 +54,9 @@ $script:workDirectory = Get-Location
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 function Main {
+
   Write-Output "Install-UiRobot starts"
   $msiPath = Join-Path $script:workDirectory $artifactFileName
-  $robotExePath = Get-UiRobotExePath
   
   $folderName = "$($cloudName)Deployed"
   $machineTemplateName = "$($cloudName)Template-$($env:computername)"
@@ -68,31 +68,30 @@ function Main {
     [System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
   }
 
-  if ((Test-Path $robotExePath)) {
-    Write-Error "Robot executable already exists, exiting..."
-    Exit 1
-  }
+  Test-UiRobotExePath
 
   Install-RobotWithMSI -msiPath $msiPath -robotInstallType $robotType
-  if ($robotType -eq "Unattended" -and $cloudName -eq "AWS") {
-    Add-LocalAdministrator -userName $userName
-  }
-  else {
-    Write-Output "Robot type selected is Attended, skipping adding local administrator."
-  }
+
+  $robotExePath = Get-UiRobotExePath
 
   if ($orchestratorUrl -and $orchAdmin -and $orchPassword -and $tenant) {  
     Write-Output "orchestratorUrl $orchestratorUrl"
     Write-Output "orchAdmin $orchAdmin"
-    Write-Output "orchPassword $orchPassword"
     Write-Output "tenant $tenant"
 
     $websession = Get-UiPathOrchestratorLoginSession
  
     Add-UiPathRobotFolder -session $websession -folderName $folderName
     if ($cloudName -eq "AWS") {
-      Add-UiPathRobotUser -session $websession -robotUsername "$env:computername\$userName" -userName $userName 
-      Write-Output "Added AWS Robot: $userName"
+      if ($robotType -eq "Unattended") {
+        Add-LocalAdministrator -userName $userName
+        Add-UiPathRobotUser -session $websession -robotUsername "$env:computername\$userName" -userName $userName 
+        Write-Output "Added AWS Robot: $userName"
+      }
+      elseif ($robotType -eq "Attended") {
+        Add-UiPathRobotUser -session $websession -robotUsername "$env:computername\Administrator" -userName $userName 
+        Write-Output "Added AWS Robot: $userName"
+      }
     }
     elseif ($cloudName -eq "Azure") {
       Add-UiPathRobotUser -session $websession -userName $userName -robotUsername $robotUserName 
@@ -111,7 +110,7 @@ function Main {
     Wait-Service -servicesName "UiPath Robot*"
     & $robotExePath --connect -url $orchestratorUrl -key $key
   }
-  Write-Output "Install completed Successfully."
+  Write-Output "Install completed successfully."
 }
 
 function Get-UiPathOrchestratorLoginSession {
@@ -189,7 +188,7 @@ function Add-UiPathRobotUser ($session, $userName, $robotUserName) {
     $dataUser = @{
       UserName                    = "$($cloudName)-$($userName)"
       Type                        = 'User'
-      RolesList                   = @("Automation User")
+      RolesList                   = @("Allow to be Automation User")
       MayHaveRobotSession         = $true
       MayHaveUnattendedSession    = $true
       MayHaveUserSession          = $true
@@ -210,7 +209,7 @@ function Add-UiPathRobotUser ($session, $userName, $robotUserName) {
       $dataUser = @{
         UserName                    = "$($cloudName)-$($userName)"
         Type                        = 'User'
-        RolesList                   = @("Automation User")
+        RolesList                   = @("Allow to be Automation User")
         MayHaveRobotSession         = $true
         MayHaveUnattendedSession    = $false
         MayHaveUserSession          = $true
@@ -459,16 +458,31 @@ function Invoke-MSIExec {
   Whether to search for the UiPath Studio Community edition executable
 #>
 function Get-UiRobotExePath {
-  param(
-    [switch] $community
-  )
+  
   $robotExePath = [System.IO.Path]::Combine(${ENV:ProgramFiles(x86)}, "UiPath", "Studio", "UiRobot.exe")
-  if ($community) {
-    $robotExePath = Get-ChildItem ([System.IO.Path]::Combine($ENV:LOCALAPPDATA, "UiPath")) -Recurse -Include "UiRobot.exe" | `
-      Select-Object -ExpandProperty FullName -Last 1
+  if ((Test-Path $robotExePath)) {
+    return $robotExePath
   }
+  $robotExePath = [System.IO.Path]::Combine(${ENV:ProgramFiles}, "UiPath", "Studio", "UiRobot.exe")
+  if ((Test-Path $robotExePath)) {
+    return $robotExePath
+  }
+  Write-Error "UiPath Robot was not installed properly, exiting..."
+  Exit 1
+}
 
-  return $robotExePath
+function Test-UiRobotExePath {
+  
+  $robotExePath = [System.IO.Path]::Combine(${ENV:ProgramFiles(x86)}, "UiPath", "Studio", "UiRobot.exe")
+  if ((Test-Path $robotExePath)) {
+    Write-Error "Robot 32 bit executable already exists, exiting..."
+    Exit 1
+  }
+  $robotExePath = [System.IO.Path]::Combine(${ENV:ProgramFiles}, "UiPath", "Studio", "UiRobot.exe")
+  if ((Test-Path $robotExePath)) {
+    Write-Error "Robot 64 bit executable already exists, exiting..."
+    Exit 1
+  }
 }
 
 <#
