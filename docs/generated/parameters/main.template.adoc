@@ -29,7 +29,7 @@
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
 |Parameter label (name) |Default value|Description|UiPath Robot version
-(`RobotVersion`)|`20.10.2`|UIPath Robot version to install.|UiPath Robot type (attended/unattended)
+(`RobotVersion`)|`21.4.3`|UIPath Robot version to install.|UiPath Robot type (attended/unattended)
 (`RobotType`)|`Attended`|Choose the type of UiPath Robot you want to install (attended or unattended).|Administrator password
 (`AdminPassword`)|`**__Requires input__**`|Windows administrator password for UiPath Robot.|UiPath Orchestrator URL
 (`OrchestratorURL`)|`**__Requires input__**`|UiPath Orchestrator URL.|UiPath Robot tenant name

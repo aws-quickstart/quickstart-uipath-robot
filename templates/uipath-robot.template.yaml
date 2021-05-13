@@ -42,9 +42,9 @@ Metadata:
       VPCID:
         default: VPC ID
       PrivateSubnetID:
-        default: Private subnet IDs
+        default: Private subnet
       PublicSubnetID:
-        default: Public subnet IDs
+        default: Public subnet
       KeyPairName:
         default: Instance key pair
       InstanceType:
@@ -132,9 +132,10 @@ Parameters:
   RobotVersion:
     Description: UIPath Robot version to install.
     Type: String
-    Default: 20.10.2
+    Default: 21.4.3
     AllowedValues:
-      - 20.10.2
+      - 21.4.3
+      - 20.10.7
     ConstraintDescription: Robot version can only contain characters *0–9* and *.* (period).
   OrchestratorURL:
     Type: String

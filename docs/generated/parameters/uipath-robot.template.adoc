@@ -4,8 +4,8 @@
 |===
 |Parameter label (name) |Default value|Description|VPC CIDR
 (`VPCCIDR`)|`10.0.0.0/16`|VPC CIDR block, in format x.x.0.0/16.|VPC ID
-(`VPCID`)|`**__Requires input__**`|ID of the VPC where the UiPath Robot is created.|Private subnet IDs
-(`PrivateSubnetID`)|`**__Requires input__**`|Private subnet with UiPath Robot.|Public subnet IDs
+(`VPCID`)|`**__Requires input__**`|ID of the VPC where the UiPath Robot is created.|Private subnet
+(`PrivateSubnetID`)|`**__Requires input__**`|Private subnet with UiPath Robot.|Public subnet
 (`PublicSubnetID`)|`**__Requires input__**`|Public subnet with bastion host to access UiPath Robot.
 |===
 .Robot VM configuration
@@ -19,7 +19,7 @@
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
 |Parameter label (name) |Default value|Description|UiPath Robot version.
-(`RobotVersion`)|`20.10.2`|UIPath Robot version to install.|UiPath Robot type (attended or unattended)
+(`RobotVersion`)|`21.4.3`|UIPath Robot version to install.|UiPath Robot type (attended or unattended)
 (`RobotType`)|`Attended`|Choose the type of UiPath Robot you want to install (attended or unattended).|Administrator password
 (`AdminPassword`)|`**__Requires input__**`|Windows administrator password for UiPath Robot.|URL of an existing and licensed Orchestrator
 (`OrchestratorURL`)|`**__Requires input__**`|UiPath Orchestrator URL.|UiPath Robot tenant name
