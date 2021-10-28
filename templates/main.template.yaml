@@ -200,10 +200,9 @@ Parameters:
   RobotVersion:
     Description: UIPath Robot version to install.
     Type: String
-    Default: 21.4.3
+    Default: 21.10.0
     AllowedValues:
-      - 21.4.3
-      - 20.10.7
+      - 21.10.0
     ConstraintDescription: Robot version can only contain characters *0–9* and *.* (period).
   OrchestratorURL:
     Type: String
@@ -264,7 +263,7 @@ Resources:
     Properties:
       TemplateURL: !Sub
         - >-
-          https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-aws-vpc/templates/aws-vpc.template.yaml
+          https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-aws-vpc/templates/aws-vpc.template
         - S3Bucket: !If
             - UsingDefaultBucket
             - !Sub '${QSS3BucketName}-${AWS::Region}'
