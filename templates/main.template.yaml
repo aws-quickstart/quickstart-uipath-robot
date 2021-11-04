@@ -200,9 +200,9 @@ Parameters:
   RobotVersion:
     Description: UIPath Robot version to install.
     Type: String
-    Default: 21.10.0
+    Default: 21.10.3
     AllowedValues:
-      - 21.10.0
+      - 21.10.3
     ConstraintDescription: Robot version can only contain characters *0–9* and *.* (period).
   OrchestratorURL:
     Type: String
