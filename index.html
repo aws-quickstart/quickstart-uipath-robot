@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.15">
+<meta name="generator" content="Asciidoctor 2.0.16">
 <title>UiPath Robot on the AWS Cloud</title>
 <style>
 
@@ -1150,79 +1150,12 @@ deploy, and operate your infrastructure and applications on the AWS Cloud.</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_supported_regions">Supported Regions</h4>
+<h4 id="_supported_aws_regions">Supported AWS Regions</h4>
 <div class="paragraph">
-<p>Based on the availability of the Amazon EC2 AMI, the AWS CloudFormation stack can be launched in the following Regions:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>us-east-1 (N. Virginia)</p>
-</li>
-<li>
-<p>us-east-2 (Ohio)</p>
-</li>
-<li>
-<p>us-west-1 (N. California)</p>
-</li>
-<li>
-<p>us-west-2 (Oregon)</p>
-</li>
-<li>
-<p>af-south-1 (Cape Town)</p>
-</li>
-<li>
-<p>ap-northeast-1 (Tokyo)</p>
-</li>
-<li>
-<p>ap-northeast-2 (Seoul)</p>
-</li>
-<li>
-<p>ap-southeast-1 (Singapore)</p>
-</li>
-<li>
-<p>ap-southeast-2 (Sydney)</p>
-</li>
-<li>
-<p>ap-east-1 (Hong Kong)</p>
-</li>
-<li>
-<p>ap-south-1 (Mumbai)</p>
-</li>
-<li>
-<p>ap-northeast-3 (Osaka-Local)</p>
-</li>
-<li>
-<p>ca-central-1 (Canada)</p>
-</li>
-<li>
-<p>eu-central-1 (Frankfurt)</p>
-</li>
-<li>
-<p>eu-west-1 (Ireland)</p>
-</li>
-<li>
-<p>eu-west-2 (London)</p>
-</li>
-<li>
-<p>eu-south-1 (Milan)</p>
-</li>
-<li>
-<p>eu-west-3 (Paris)</p>
-</li>
-<li>
-<p>eu-north-1 (Stockholm)</p>
-</li>
-<li>
-<p>me-south-1 (Bahrain)</p>
-</li>
-<li>
-<p>sa-east-1 (São Paulo)</p>
-</li>
-</ul>
+<p>For any Quick Start to work in a Region other than its default Region, all the services it deploys must be supported in that Region. You can launch a Quick Start in any Region and see if it works. If you get an error such as “Unrecognized resource type,” the Quick Start is not supported in that Region.</p>
 </div>
 <div class="paragraph">
-<p>For a list of supported Regions, see <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html" target="_blank" rel="noopener">AWS service endpoints</a>.</p>
+<p>For an up-to-date list of AWS Regions and the AWS services they support, see <a href="https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/" target="_blank" rel="noopener">AWS Regional Services</a>.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -1238,9 +1171,9 @@ Certain Regions are available on an opt-in basis. For more information, see <a h
 </div>
 </div>
 <div class="sect3">
-<h4 id="_ec2_key_pairs">EC2 key pairs</h4>
+<h4 id="_amazon_ec2_key_pairs">Amazon EC2 key pairs</h4>
 <div class="paragraph">
-<p>Make sure that at least one <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html" target="_blank" rel="noopener">Amazon EC2 key pair</a> exists in your AWS account in the Region where you plan to deploy the Quick Start. Make note of the key pair name. You need it during deployment. To create a key pair, see <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html" target="_blank" rel="noopener">Amazon EC2 key pairs and Linux instances</a>.</p>
+<p>Ensure that at least one Amazon EC2 key pair exists in your AWS account in the Region where you plan to deploy the Quick Start. Note the key-pair name because you will use it during deployment. To create a key pair, see <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html" target="_blank" rel="noopener">Amazon EC2 key pairs and Linux instances</a>.</p>
 </div>
 <div class="paragraph">
 <p>For testing or proof-of-concept purposes, we recommend creating a new key pair instead of using one that’s already being used by a production instance.</p>
@@ -1250,18 +1183,6 @@ Certain Regions are available on an opt-in basis. For more information, see <a h
 <h4 id="_iam_permissions">IAM permissions</h4>
 <div class="paragraph">
 <p>Before launching the Quick Start, you must sign in to the AWS Management Console with IAM permissions for the resources that the templates deploy. The <em>AdministratorAccess</em> managed policy within IAM provides sufficient permissions, although your organization may choose to use a custom policy with more restrictions. For more information, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_job-functions.html" target="_blank" rel="noopener">AWS managed policies for job functions</a>.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_prepare_your_aws_account">Prepare your AWS account</h4>
-<div class="sect4">
-<h5 id="_key_pair">Key pair</h5>
-<div class="paragraph">
-<p>Make sure that at least one Amazon EC2 key pair exists in your AWS account in your Region. Note the key-pair name because you will need it during deployment. For more information, see <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html" target="_blank" rel="noopener">Amazon EC2 key pairs and Linux instances</a>.</p>
-</div>
-<div class="paragraph">
-<p>For testing or proof-of-concept purposes, we recommend creating a new key pair instead of using one that’s already in use by a production instance. For more information, see <a href="#_create_a_key_pair">Create a key pair</a>, later in this guide.</p>
-</div>
 </div>
 </div>
 <div class="sect3">
@@ -1278,6 +1199,18 @@ Certain Regions are available on an opt-in basis. For more information, see <a h
 <p><strong>Deploy UiPath Robot into an existing VPC</strong>. Provisions resources into your existing AWS VPC.</p>
 </li>
 </ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prepare_your_aws_account">Prepare your AWS account</h4>
+<div class="sect4">
+<h5 id="_key_pair">Key pair</h5>
+<div class="paragraph">
+<p>Make sure that at least one Amazon EC2 key pair exists in your AWS account in your Region. Note the key-pair name because you will need it during deployment. For more information, see <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html" target="_blank" rel="noopener">Amazon EC2 key pairs and Linux instances</a>.</p>
+</div>
+<div class="paragraph">
+<p>For testing or proof-of-concept purposes, we recommend creating a new key pair instead of using one that’s already in use by a production instance. For more information, see <a href="#_create_a_key_pair">Create a key pair</a>, later in this guide.</p>
+</div>
 </div>
 </div>
 </div>
@@ -1355,7 +1288,7 @@ You are responsible for the cost of the AWS services used while running this Qui
 <p>On the <strong>Specify stack details</strong> page, change the stack name if needed, and review the parameters for the template. Provide values for any parameters that require input. For all other parameters, review the default settings and customize them as necessary. For details on each parameter, see the <a href="#_parameter_reference">Parameter reference</a> section of this guide. When you finish reviewing and customizing the parameters, choose <strong>Next</strong>.</p>
 </li>
 <li>
-<p>On the <strong>Configure stack options</strong> page, you can <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-resource-tags.html" target="_blank" rel="noopener">specify tags</a> (key-value pairs) for resources in your stack and <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-add-tags.html" target="_blank" rel="noopener">set advanced options</a>. When you’re finished, choose <strong>Next</strong>.</p>
+<p>On the <strong>Configure stack options</strong> page, you can <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-resource-tags.html" target="_blank" rel="noopener">specify tags</a> (key-value pairs) for resources in your stack and <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-add-tags.html" target="_blank" rel="noopener">set advanced options</a>. When you finish, choose <strong>Next</strong>.</p>
 </li>
 <li>
 <p>On the <strong>Review</strong> page, review and confirm the template settings. Under <strong>Capabilities</strong>, select the two check boxes to acknowledge that the template creates IAM resources and might require the ability to automatically expand macros.</p>
@@ -1874,7 +1807,7 @@ Unless you are customizing the Quick Start templates for your own deployment pro
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Robot version
 (<code>RobotVersion</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>21.4.3</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>21.10.3</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">UIPath Robot version to install.</p></td>
 </tr>
 <tr>
@@ -2035,7 +1968,7 @@ Unless you are customizing the Quick Start templates for your own deployment pro
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">UiPath Robot version.
 (<code>RobotVersion</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>21.4.3</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>21.10.3</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">UIPath Robot version to install.</p></td>
 </tr>
 <tr>
@@ -2120,7 +2053,7 @@ Unless you are customizing the Quick Start templates for your own deployment pro
 <h2 id="_quick_start_reference_deployments">Quick Start reference deployments</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>See the <a href="https://aws.amazon.com/quickstart/">AWS Quick Start home page</a>.</p>
+<p>See the <a href="https://aws.amazon.com/quickstart/" target="_blank" rel="noopener">AWS Quick Start home page</a>.</p>
 </div>
 </div>
 </div>
@@ -2149,16 +2082,16 @@ and to share your customizations with others.</p>
 </div>
 <p class="footer-text">
 <!-- We can use document attributes: -->
-<!-- Generated with Asciidoctor v2.0.15. -->
+<!-- Generated with Asciidoctor v2.0.16. -->
 <a href="https://aws.amazon.com/privacy/">Privacy</a> | <a href="https://aws.amazon.com/terms/">Site terms</a> | &copy; 2021, Amazon Web Services, Inc. or its affiliates and UiPath. All rights reserved.
 </p>
 </body>
 </html>
 <!--
 repo commit:
-028bc97f20118bcfe32d24a0f76ea270a8dd81cd
+59f4503a1161f7663929a1a32da70d2ee4305264
 
 submodule config:
- 81ea0b675a571b662377f9de556a26cce8dad05f docs/boilerplate (heads/main)
- ffc7af4e59a09dbf52199a3ecf70f3805abeff48 submodules/quickstart-aws-vpc (v1.0-58-gffc7af4)
+ eea042d0b9c005d2549a71349e5f28b02c81af75 docs/boilerplate (heads/main)
+ b7aefd089e944d77cdc2b083886cdc498d2a6ee4 submodules/quickstart-aws-vpc (v1.0-59-gb7aefd0)
 -->
