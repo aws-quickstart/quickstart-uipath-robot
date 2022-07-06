@@ -254,9 +254,7 @@ Parameters:
       and https://aws-quickstart.github.io/option1.html.
     Type: String
 Conditions:
-  UsingDefaultBucket: !Equals
-    - !Ref QSS3BucketName
-    - aws-quickstart
+  UsingDefaultBucket: !Equals [!Ref QSS3BucketName, aws-quickstart]
 Resources:
   NetworkStack:
     Type: 'AWS::CloudFormation::Stack'
