@@ -1,0 +1,22 @@
+// Include any postdeployment steps here, such as steps necessary to test that the deployment was successful. If there are no postdeployment steps, leave this file empty.
+
+== Postdeployment steps
+
+If you provided a UiPath Orchestrator URL during deployment, log in to UiPath Orchestrator. Then, verify that the UiPath Robot is present and connected to the tenant.
+
+:xrefstyle: short
+[#test1]
+.Test the deployment
+image::../docs/deployment_guide/images/test1.png[test1,width=100%,height=100%]
+
+The deployment creates a *MODERN* directory called *AWSDeployed*, which contains UiPath Robot.
+
+* For an unattended UiPath software robot, the *STATUS* is *N/A* because the new local administrator account is not yet logged in. However, you can run jobs.
+* For an attended UiPath software robot, the *STATUS* is *DISCONNECTED* because the built-in administrator account is not logged in.
+
+Access the UiPath Robot VM from the bastion host to check that it is deployed successfully. Connect to an attended UiPath software robot through the administrator account. To retrieve the password, use your private key. For an unattended robot, retrieve the user account from the *Robots* page in UiPath Orchestrator. The user format is `domain/username` or `machinename/username`. Use the same password you used during deployment.
+
+:xrefstyle: short
+[#test2]
+.Test the deployment
+image::../docs/deployment_guide/images/test2.png[test2,width=100%,height=100%]
